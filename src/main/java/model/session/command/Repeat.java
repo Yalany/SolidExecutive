@@ -1,5 +1,6 @@
-package model.session.commands;
+package model.session.command;
 
+import model.session.Command;
 import model.session.Session;
 
 public class Repeat implements Command {

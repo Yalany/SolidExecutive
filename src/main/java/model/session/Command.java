@@ -1,6 +1,4 @@
-package model.session.commands;
-
-import model.session.Session;
+package model.session;
 
 public interface Command {
 

@@ -1,7 +1,5 @@
 package model.session;
 
-import model.session.commands.Command;
-
 import java.util.List;
 
 public class Commands {
