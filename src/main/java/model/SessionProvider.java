@@ -4,8 +4,6 @@ import model.session.Commands;
 import model.session.EventProvider;
 import model.session.GameResources;
 import model.session.Session;
-import model.session.commands.GameCommands;
-import model.session.commands.MenuCommands;
 
 import java.util.HashMap;
 
@@ -50,8 +48,8 @@ public class SessionProvider {
     private EventProvider gameEventProvider = new EventProvider();
     private EventProvider gamePlusEventProvider = new EventProvider();
 
-    private Commands menuCommands = new MenuCommands();
-    private Commands gameCommands = new GameCommands();
+    private Commands menuCommands = new Commands();
+    private Commands gameCommands = new Commands();
 
     // called only once for every unique user
     private Session createUserSession(int userId) {

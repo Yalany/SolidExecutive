@@ -25,14 +25,19 @@ class Event {
     }
 
     List<String> getButtonsText() {
-        return buttons.stream().map(Button::getName).collect(Collectors.toCollection(LinkedList::new));
+        return buttons.stream()
+                .map(Button::getName)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     boolean canAcceptIntent(String intent) {
-        return buttons.stream().anyMatch(btn -> btn.contains(intent));
+        return buttons.stream()
+                .anyMatch(btn -> btn.contains(intent));
     }
 
     void acceptIntent(String intent, SessionOperator operator) {
-        buttons.stream().filter(btn -> btn.contains(intent)).forEach(btn -> btn.activate(operator));
+        buttons.stream()
+                .filter(btn -> btn.contains(intent))
+                .forEach(btn -> btn.activate(operator));
     }
 }

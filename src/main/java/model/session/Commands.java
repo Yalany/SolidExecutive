@@ -1,6 +1,10 @@
 package model.session;
 
-public interface Commands {
+import model.session.commands.Command;
+
+import java.util.List;
+
+public class Commands {
 
 //    public final static String INTENT_CATCH_ALL = "catch all";
 //    public final static String INTENT_REPEAT = "repeat";
@@ -9,7 +13,16 @@ public interface Commands {
 //    public final static String INTENT_EXIT = "exit";
 //    public final static String INTENT_HELP = "help";
 
-    boolean canAcceptCommand(String intent);
+    private List<Command> commands;
 
-    void acceptCommand(String intent, Session context);
+    boolean canAcceptCommand(String intent) {
+        return commands.stream()
+                .anyMatch(c -> c.haveIntent(intent));
+    }
+
+    void acceptCommand(String intent, Session context) {
+        commands.stream()
+                .filter(c -> c.haveIntent(intent))
+                .forEach(c -> c.execute(context));
+    }
 }
