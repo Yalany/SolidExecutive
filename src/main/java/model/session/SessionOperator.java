@@ -17,7 +17,7 @@ public class SessionOperator {
     }
 
     public void changeResources(String resourceName, int resourceAmount) {
-        context.getResources().modifyAmount(resourceName, resourceAmount);
+        context.getGameResources().modifyAmount(resourceName, resourceAmount);
     }
 
     public void endMonth() {

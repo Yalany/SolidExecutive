@@ -1,8 +1,13 @@
 package model.session;
 
 import java.util.List;
+//import java.util.Timer;
+//import java.util.TimerTask;
 
 public class Session {
+
+//    // milliseconds since last action to remove session from cache
+//    private final static long TIMEOUT_DELAY = 300000;
 
     private SessionOperator sessionOperator;
 
@@ -13,18 +18,18 @@ public class Session {
     // session state
     private Event currentEvent;
     private EventDeck eventDeck;
-    private GameResources resources;
+    private GameResources gameResources;
     private int currentMonth;
 
-    // user specific data
-    private boolean isSubscribed;
-    private long subscriptionEndTime;
+//    // user specific data
+//    private boolean isSubscribed;
+//    private long subscriptionEndTime;
 
-    public Session(EventProvider eventProvider, Commands commands, GameResources resources) {
-        this(eventProvider, new EventDeck(), commands, resources);
+    public Session(EventProvider eventProvider, Commands commands, GameResources gameResources) {
+        this(eventProvider, new EventDeck(), commands, gameResources);
     }
 
-    public Session(EventProvider eventProvider, EventDeck deck, Commands commands, GameResources resources) {
+    public Session(EventProvider eventProvider, EventDeck deck, Commands commands, GameResources gameResources) {
         this.sessionOperator = new SessionOperator(this);
 
         this.eventProvider = eventProvider;
@@ -32,7 +37,7 @@ public class Session {
 
         this.currentEvent = eventProvider.getEventById(1, this);
         this.eventDeck = deck;
-        this.resources = resources;
+        this.gameResources = gameResources;
         this.currentMonth = 0;
     }
 
@@ -57,6 +62,10 @@ public class Session {
         return currentEvent.getButtonsText();
     }
 
+    public int getCurrentMonth() {
+        return currentMonth;
+    }
+
 
     public void setEventProvider(EventProvider eventProvider) {
         this.eventProvider = eventProvider;
@@ -66,34 +75,46 @@ public class Session {
         this.commands = commands;
     }
 
-    public void startTimeout() {
-
-    }
-
-
-    private void setCurrentEvent(int eventId) {
-        currentEvent = eventProvider.getEventById(eventId, this);
-    }
-
     public void setEventDeck(EventDeck eventDeck) {
         this.eventDeck = eventDeck;
     }
 
-    public void setResources(GameResources resources) {
-        this.resources = resources;
+    public void setGameResources(GameResources gameResources) {
+        this.gameResources = gameResources;
     }
+//
+//    public void startTimeout() {
+//        timeoutTimer.cancel();
+//        timeoutTimer = new Timer();
+//        Timeout timeout = new Timeout();
+//        timeoutTimer.schedule(timeout, TIMEOUT_DELAY);
+//    }
+//
 
-    void nextMonth() {
-        currentMonth++;
-    }
+//    private Timer timeoutTimer = new Timer();
+//
+//    private class Timeout extends TimerTask {
+//
+//        Timeout() {
+//        }
+//
+//        @Override
+//        public void run() {
+//
+//        }
+//    }
 
-
+    // for operator
     EventDeck getEventDeck() {
         return eventDeck;
     }
 
-    GameResources getResources() {
-        return resources;
+    GameResources getGameResources() {
+        return gameResources;
+    }
+
+    void nextMonth() {
+        currentMonth++;
     }
 
     void exitGame() {
@@ -101,7 +122,7 @@ public class Session {
     }
 
 
-    int getCurrentMonth() {
-        return currentMonth;
+    private void setCurrentEvent(int eventId) {
+        currentEvent = eventProvider.getEventById(eventId, this);
     }
 }

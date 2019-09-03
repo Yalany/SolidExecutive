@@ -4,10 +4,13 @@ import java.util.HashMap;
 
 public class GameResources {
 
-    private HashMap<String, Integer> resources;
+    private HashMap<String, Integer> resources = new HashMap<>();
 
     public GameResources() {
-        this.resources = new HashMap<>();
+        this.addType("Citizens relationship", 50)
+                .addType("Government relationship", 75)
+                .addType("City infrastructure", 300000)
+                .addType("City budget", 60000);
     }
 
     public GameResources addType(String resourceName, int startingAmount) {

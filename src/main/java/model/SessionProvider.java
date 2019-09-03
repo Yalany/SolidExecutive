@@ -21,6 +21,7 @@ public class SessionProvider {
 
     // used by session timeout timer
     public void removeFromCache(int userId) {
+        saveSessionToDB(userId);
         cache.remove(userId);
     }
 
@@ -37,10 +38,9 @@ public class SessionProvider {
     }
 
     private Session extractFromDB(int userId) {
-        var session = createUserSession(userId);
-        cache.put(userId, session);
-        session.startTimeout();
-        throw new UnsupportedOperationException("not yet implemented");
+        Session extractedSession = null;
+        cacheSession(userId, extractedSession);
+        return extractedSession;
     }
 
     private EventProvider menuEventProvider = new EventProvider();
@@ -53,8 +53,8 @@ public class SessionProvider {
     // called only once for every unique user
     private Session createUserSession(int userId) {
         var session = new Session(menuEventProvider, menuCommands, createGameResources());
-        cache.put(userId, session);
-        saveSessionToDB(userId, session);
+        saveSessionToDB(userId);
+        cacheSession(userId, session);
         return session;
     }
 
@@ -66,7 +66,12 @@ public class SessionProvider {
                 .addType("City budget", 60000);
     }
 
-    private void saveSessionToDB(int userId, Session session) {
+    private void cacheSession(int userId, Session session) {
+        cache.put(userId, session);
+//        session.startTimeout();
+    }
 
+    private void saveSessionToDB(int userId) {
+        var session = cache.get(userId);
     }
 }
