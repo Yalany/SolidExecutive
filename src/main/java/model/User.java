@@ -4,14 +4,14 @@ public class User {
 
     private int id;
     private int gamesFinished;
-    private boolean haveActiveGame;
     private long subscriptionEndTime;
+    private boolean haveActiveGame;
 
     public User(int id) {
         this.id = id;
         gamesFinished = 0;
-        haveActiveGame = false;
         subscriptionEndTime = System.currentTimeMillis();
+        haveActiveGame = false;
     }
 
     public int getId() {
@@ -22,16 +22,16 @@ public class User {
         return gamesFinished;
     }
 
+    public long getSubscriptionEndTime() {
+        return subscriptionEndTime;
+    }
+
     public boolean isHaveActiveGame() {
         return haveActiveGame;
     }
 
     public boolean isSubscribed() {
         return System.currentTimeMillis() < subscriptionEndTime;
-    }
-
-    public long getSubscriptionEndTime() {
-        return subscriptionEndTime;
     }
 
     public void incrementGamesFinished() {
