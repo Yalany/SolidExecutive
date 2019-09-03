@@ -34,7 +34,6 @@ public class SessionProvider {
 
     private boolean containsInDB(int userId) {
         return false;
-//        throw new UnsupportedOperationException("not yet implemented");
     }
 
     private Session extractFromDB(int userId) {
