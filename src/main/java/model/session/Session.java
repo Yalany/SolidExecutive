@@ -1,13 +1,8 @@
 package model.session;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Session {
-
-    // milliseconds since last action to remove session from cache
-    private final static long TIMEOUT_DELAY = 300000;
 
     private SessionOperator sessionOperator;
 
@@ -137,27 +132,5 @@ public class Session {
 
     private void setCurrentEvent(int eventId) {
         currentEvent = eventProvider.getEventById(eventId, this);
-    }
-
-
-    public void startTimeout() {
-        timeoutTimer.cancel();
-        timeoutTimer = new Timer();
-        Timeout timeout = new Timeout();
-        timeoutTimer.schedule(timeout, TIMEOUT_DELAY);
-    }
-
-
-    private Timer timeoutTimer = new Timer();
-
-    private static class Timeout extends TimerTask {
-
-        Timeout() {
-        }
-
-        @Override
-        public void run() {
-
-        }
     }
 }

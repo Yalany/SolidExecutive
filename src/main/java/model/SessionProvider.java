@@ -5,69 +5,114 @@ import model.session.EventProvider;
 import model.session.Session;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class SessionProvider {
+class SessionProvider {
+
+    // milliseconds since last action to remove session from cache
+    private final static long SESSION_TIMEOUT = 300000;
+
+    Session getSessionById(int userId) {
+        if (containedInCache(userId))
+            return getFromCache(userId);
+        if (containedInDB(userId))
+            return getFromDB(userId);
+        return createUserSession(userId);
+    }
+
+    // called only once for every unique user
+    private Session createUserSession(int userId) {
+        var session = setupSessionMenu(new Session(userId));
+        saveInDB(session);
+        saveInCache(session);
+        return session;
+    }
 
     // TODO: build and fill with events
     private EventProvider menuEventProvider;
     private EventProvider gameEventProvider;
     private EventProvider gamePlusEventProvider;
 
-    private Commands menuCommands = new Commands();
-    private Commands gameCommands = new Commands();
+    private Commands menuCommands;
+    private Commands gameCommands;
 
-    private HashMap<Integer, Session> cache = new HashMap<>();
-
-    Session getSessionById(int userId) {
-        if (containsInCache(userId))
-            return extractFromCache(userId);
-        if (containsInDB(userId))
-            return extractFromDB(userId);
-        return createUserSession(userId);
-    }
-
-    // used by session timeout timer
-    public void removeFromCache(Session session) {
-        saveSessionToDB(session);
-        cache.remove(session.getId());
-    }
-
-    private boolean containsInCache(int userId) {
-        return cache.containsKey(userId);
-    }
-
-    private Session extractFromCache(int userId) {
-        return cache.get(userId);
-    }
-
-    private boolean containsInDB(int userId) {
-        return false;
-    }
-
-    private Session extractFromDB(int userId) {
-        Session extractedSession = null;
-        cacheSession(extractedSession);
-        return extractedSession;
-    }
-
-    // called only once for every unique user
-    private Session createUserSession(int userId) {
-        var session = new Session(userId)
+    private Session setupSessionMenu(Session session) {
+        return session
                 .setEventProvider(menuEventProvider)
                 .setCommands(menuCommands)
                 .setDefaultEventDeck();
-
-        saveSessionToDB(session);
-        cacheSession(session);
-        return session;
     }
 
-    private void cacheSession(Session session) {
-        cache.put(session.getId(), session);
-//        session.startTimeout();
+    private Session setupSessionGame(Session session) {
+        return session
+                .setEventProvider(gameEventProvider)
+                .setCommands(gameCommands)
+                .setDefaultEventDeck();
     }
 
-    private void saveSessionToDB(Session session) {
+    private Session setupSessionGamePlus(Session session) {
+        return session
+                .setEventProvider(gamePlusEventProvider)
+                .setCommands(gameCommands)
+                .setDefaultEventDeck();
+    }
 
+
+    private HashMap<Integer, Session> cache = new HashMap<>();
+    private HashMap<Integer, Timer> cacheCleaner = new HashMap<>();
+
+    private class SessionTimeout extends TimerTask {
+        private int sessionId;
+
+        SessionTimeout(int sessionId) {
+            this.sessionId = sessionId;
+        }
+
+        @Override
+        public void run() {
+            saveInDB(removeFromCache(sessionId));
+        }
+    }
+
+    private void saveInCache(Session session) {
+        var sessionId = session.getId();
+
+        cache.put(sessionId, session);
+
+        if (cacheCleaner.containsKey(sessionId))
+            cacheCleaner.get(sessionId).cancel();
+
+        var timeoutTimer = new Timer();
+        timeoutTimer.schedule(new SessionTimeout(sessionId), SESSION_TIMEOUT);
+        cacheCleaner.put(sessionId, timeoutTimer);
+    }
+
+    private boolean containedInCache(int userId) {
+        return cache.containsKey(userId);
+    }
+
+    private Session getFromCache(int userId) {
+        return cache.get(userId);
+    }
+
+    private Session removeFromCache(int userId) {
+        return cache.remove(userId);
+    }
+
+
+    // TODO below: implement DB
+    private void saveInDB(Session session) {
+
+    }
+
+    private boolean containedInDB(int userId) {
+        return false;
+    }
+
+    private Session getFromDB(int userId) {
+        Session session = new Session(userId);
+        saveInCache(session);
+        return null;
     }
 }
