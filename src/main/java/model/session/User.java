@@ -18,6 +18,7 @@ public class User {
         return id;
     }
 
+
     public int getGamesFinished() {
         return gamesFinished;
     }
