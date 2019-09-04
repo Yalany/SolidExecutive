@@ -61,18 +61,18 @@ class SessionProvider {
     private HashMap<Integer, Session> cache = new HashMap<>();
     private HashMap<Integer, Timer> cacheCleaner = new HashMap<>();
 
-        private class SessionTimeout extends TimerTask {
-            private int sessionId;
+    private class SessionTimeout extends TimerTask {
+        private int sessionId;
 
-            SessionTimeout(int sessionId) {
-                this.sessionId = sessionId;
-            }
-
-            @Override
-            public void run() {
-                saveInDB(removeFromCache(sessionId));
-            }
+        SessionTimeout(int sessionId) {
+            this.sessionId = sessionId;
         }
+
+        @Override
+        public void run() {
+            saveInDB(removeFromCache(sessionId));
+        }
+    }
 
     private void saveInCache(Session session) {
         var sessionId = session.getId();
