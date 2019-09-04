@@ -20,9 +20,9 @@ public class SessionProvider {
     }
 
     // used by session timeout timer
-    public void removeFromCache(int userId) {
-        saveSessionToDB(userId);
-        cache.remove(userId);
+    public void removeFromCache(Session session) {
+        saveSessionToDB(session);
+        cache.remove(session.getId());
     }
 
     private boolean containsInCache(int userId) {
@@ -52,8 +52,11 @@ public class SessionProvider {
 
     // called only once for every unique user
     private Session createUserSession(int userId) {
-        var session = new Session(menuEventProvider, menuCommands, createGameResources());
-        saveSessionToDB(userId);
+        var session = new Session(userId)
+                .setGameResources(createGameResources())
+                .setEventProvider(menuEventProvider)
+                .setCommands(menuCommands);
+        saveSessionToDB(session);
         cacheSession(userId, session);
         return session;
     }
@@ -71,7 +74,7 @@ public class SessionProvider {
 //        session.startTimeout();
     }
 
-    private void saveSessionToDB(int userId) {
-        var session = cache.get(userId);
+    private void saveSessionToDB(Session session) {
+
     }
 }

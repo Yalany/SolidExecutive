@@ -1,4 +1,4 @@
-package model;
+package model.session;
 
 public class User {
 
@@ -7,14 +7,14 @@ public class User {
     private long subscriptionEndTime;
     private boolean haveActiveGame;
 
-    public User(int id) {
+    User(int id) {
         this.id = id;
         gamesFinished = 0;
         subscriptionEndTime = System.currentTimeMillis();
         haveActiveGame = false;
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 

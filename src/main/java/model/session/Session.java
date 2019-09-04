@@ -11,35 +11,53 @@ public class Session {
 
     private SessionOperator sessionOperator;
 
-    // session content providers
     private EventProvider eventProvider;
     private Commands commands;
 
-    // session state
     private Event currentEvent;
     private EventDeck eventDeck;
     private GameResources gameResources;
     private int currentMonth;
 
-    // user specific data
-    private boolean isSubscribed;
-    private long subscriptionEndTime;
+    private User user;
 
-    public Session(EventProvider eventProvider, Commands commands, GameResources gameResources) {
-        this(eventProvider, new EventDeck(), commands, gameResources);
-    }
-
-    public Session(EventProvider eventProvider, EventDeck deck, Commands commands, GameResources gameResources) {
+    public Session() {
         this.sessionOperator = new SessionOperator(this);
 
-        this.eventProvider = eventProvider;
-        this.commands = commands;
+    }
 
-        this.currentEvent = eventProvider.getEventById(1, this);
-        this.eventDeck = deck;
-        this.gameResources = gameResources;
+    public Session(int userId) {
+        this.sessionOperator = new SessionOperator(this);
+        this.user = new User(userId);
+        this.eventDeck = new EventDeck();
         this.currentMonth = 0;
     }
+
+    public Session setEventProvider(EventProvider eventProvider) {
+        this.eventProvider = eventProvider;
+        return this;
+    }
+
+    public Session setCommands(Commands commands) {
+        this.commands = commands;
+        return this;
+    }
+
+    public Session setGameResources(GameResources gameResources) {
+        this.gameResources = gameResources;
+        return this;
+    }
+
+    public Session setEventDeck(EventDeck eventDeck) {
+        this.eventDeck = eventDeck;
+        return this;
+    }
+
+
+    public int getId() {
+        return user.getId();
+    }
+
 
     public void acceptUserIntent(String intent) {
         if (currentEvent.canAcceptIntent(intent)) {
@@ -66,22 +84,6 @@ public class Session {
         return currentMonth;
     }
 
-
-    public void setEventProvider(EventProvider eventProvider) {
-        this.eventProvider = eventProvider;
-    }
-
-    public void setCommands(Commands commands) {
-        this.commands = commands;
-    }
-
-    public void setEventDeck(EventDeck eventDeck) {
-        this.eventDeck = eventDeck;
-    }
-
-    public void setGameResources(GameResources gameResources) {
-        this.gameResources = gameResources;
-    }
 
     public void startTimeout() {
         timeoutTimer.cancel();
