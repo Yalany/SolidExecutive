@@ -21,7 +21,6 @@ class SessionProvider {
         return createUserSession(userId);
     }
 
-    // called only once for every unique user
     private Session createUserSession(int userId) {
         var session = setupSessionMenu(new Session(userId));
         saveInDB(session);
@@ -29,7 +28,7 @@ class SessionProvider {
         return session;
     }
 
-    // TODO: build and fill with events
+
     private EventProvider menuEventProvider;
     private EventProvider gameEventProvider;
     private EventProvider gamePlusEventProvider;
@@ -62,18 +61,18 @@ class SessionProvider {
     private HashMap<Integer, Session> cache = new HashMap<>();
     private HashMap<Integer, Timer> cacheCleaner = new HashMap<>();
 
-    private class SessionTimeout extends TimerTask {
-        private int sessionId;
+        private class SessionTimeout extends TimerTask {
+            private int sessionId;
 
-        SessionTimeout(int sessionId) {
-            this.sessionId = sessionId;
-        }
+            SessionTimeout(int sessionId) {
+                this.sessionId = sessionId;
+            }
 
-        @Override
-        public void run() {
-            saveInDB(removeFromCache(sessionId));
+            @Override
+            public void run() {
+                saveInDB(removeFromCache(sessionId));
+            }
         }
-    }
 
     private void saveInCache(Session session) {
         var sessionId = session.getId();
