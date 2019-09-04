@@ -4,20 +4,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class Event {
+public class Event {
 
-    private int id;
     private String text;
     private List<Button> buttons;
 
-    Event(int id, String text, List<Button> buttons) {
-        this.id = id;
+    Event(String text, List<Button> buttons) {
         this.text = text;
         this.buttons = buttons;
     }
 
-    public int getId() {
-        return id;
+    Event setText(String text) {
+        this.text = text;
+        return this;
+    }
+
+    Event addButton(Button button) {
+        buttons.add(button);
+        return this;
     }
 
     String getText() {

@@ -7,10 +7,10 @@ public class GameResources {
     private HashMap<String, Integer> resources = new HashMap<>();
 
     public GameResources() {
-        this.addType("Citizens relationship", 50)
-                .addType("Government relationship", 75)
-                .addType("City infrastructure", 300000)
-                .addType("City budget", 60000);
+    }
+
+    public GameResources(HashMap<String, Integer> resources) {
+        this.resources = resources;
     }
 
     public GameResources addType(String resourceName, int startingAmount) {

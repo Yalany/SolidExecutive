@@ -14,6 +14,21 @@ class Button {
         this.operations = operations;
     }
 
+    Button setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    Button addIntent(String intent) {
+        intents.add(intent);
+        return this;
+    }
+
+    Button addOperation(Operation operation) {
+        operations.add(operation);
+        return this;
+    }
+
     String getName() {
         return name;
     }
@@ -24,5 +39,15 @@ class Button {
 
     void activate(SessionOperator operator) {
         operations.forEach(o -> o.activate(operator));
+    }
+
+    // TODO: check if option can be used with current player resources
+    boolean doesFitSession(Session session) {
+        return false;
+    }
+
+    // TODO: check if option requires subscription
+    boolean isPaid() {
+        return false;
     }
 }

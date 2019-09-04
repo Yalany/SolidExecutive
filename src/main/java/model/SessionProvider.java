@@ -2,12 +2,19 @@ package model;
 
 import model.session.Commands;
 import model.session.EventProvider;
-import model.session.GameResources;
 import model.session.Session;
 
 import java.util.HashMap;
 
 public class SessionProvider {
+
+    // TODO: build and fill with events
+    private EventProvider menuEventProvider;
+    private EventProvider gameEventProvider;
+    private EventProvider gamePlusEventProvider;
+
+    private Commands menuCommands = new Commands();
+    private Commands gameCommands = new Commands();
 
     private HashMap<Integer, Session> cache = new HashMap<>();
 
@@ -39,38 +46,24 @@ public class SessionProvider {
 
     private Session extractFromDB(int userId) {
         Session extractedSession = null;
-        cacheSession(userId, extractedSession);
+        cacheSession(extractedSession);
         return extractedSession;
     }
-
-    private EventProvider menuEventProvider = new EventProvider();
-    private EventProvider gameEventProvider = new EventProvider();
-    private EventProvider gamePlusEventProvider = new EventProvider();
-
-    private Commands menuCommands = new Commands();
-    private Commands gameCommands = new Commands();
 
     // called only once for every unique user
     private Session createUserSession(int userId) {
         var session = new Session(userId)
                 .setEventProvider(menuEventProvider)
                 .setCommands(menuCommands)
-                .setGameResources(createGameResources());
+                .setDefaultEventDeck();
+
         saveSessionToDB(session);
-        cacheSession(userId, session);
+        cacheSession(session);
         return session;
     }
 
-    private GameResources createGameResources() {
-        return new GameResources()
-                .addType("Citizens relationship", 50)
-                .addType("Government relationship", 75)
-                .addType("City infrastructure", 300000)
-                .addType("City budget", 60000);
-    }
-
-    private void cacheSession(int userId, Session session) {
-        cache.put(userId, session);
+    private void cacheSession(Session session) {
+        cache.put(session.getId(), session);
 //        session.startTimeout();
     }
 
