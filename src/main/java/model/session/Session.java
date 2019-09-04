@@ -21,16 +21,28 @@ public class Session {
 
     private User user;
 
-    public Session() {
+    public Session(EventProvider eventProvider,
+                   Commands commands,
+                   Event currentEvent,
+                   EventDeck eventDeck,
+                   GameResources gameResources,
+                   int currentMonth,
+                   User user) {
         this.sessionOperator = new SessionOperator(this);
+        this.eventProvider = eventProvider;
+        this.commands = commands;
+        this.currentEvent = currentEvent;
+        this.eventDeck = eventDeck;
+        this.gameResources = gameResources;
+        this.currentMonth = currentMonth;
+        this.user = user;
 
     }
 
     public Session(int userId) {
+        this(null, null, null, new EventDeck(), null, 0, new User(userId));
         this.sessionOperator = new SessionOperator(this);
-        this.user = new User(userId);
-        this.eventDeck = new EventDeck();
-        this.currentMonth = 0;
+
     }
 
     public Session setEventProvider(EventProvider eventProvider) {
@@ -50,6 +62,11 @@ public class Session {
 
     public Session setEventDeck(EventDeck eventDeck) {
         this.eventDeck = eventDeck;
+        return this;
+    }
+
+    public Session setEventDeck() {
+        this.eventDeck = new EventDeck();
         return this;
     }
 

@@ -2,7 +2,6 @@ package model.session;
 
 import java.util.stream.IntStream;
 
-//@SuppressWarnings("DuplicatedCode")
 class EventDeck {
 
     private final int[] events;
@@ -13,10 +12,6 @@ class EventDeck {
 
     EventDeck() {
         this(60, true);
-    }
-
-    EventDeck(int size) {
-        this(size, false);
     }
 
     private EventDeck(int size, boolean isEndless) {

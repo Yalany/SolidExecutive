@@ -53,9 +53,9 @@ public class SessionProvider {
     // called only once for every unique user
     private Session createUserSession(int userId) {
         var session = new Session(userId)
-                .setGameResources(createGameResources())
                 .setEventProvider(menuEventProvider)
-                .setCommands(menuCommands);
+                .setCommands(menuCommands)
+                .setGameResources(createGameResources());
         saveSessionToDB(session);
         cacheSession(userId, session);
         return session;
