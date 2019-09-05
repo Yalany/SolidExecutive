@@ -9,7 +9,7 @@ public class Event {
     private String text;
     private List<Button> buttons;
 
-    Event(String text, List<Button> buttons) {
+    public Event(String text, List<Button> buttons) {
         this.text = text;
         this.buttons = buttons;
     }

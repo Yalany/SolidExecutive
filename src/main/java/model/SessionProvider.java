@@ -22,10 +22,7 @@ class SessionProvider {
     }
 
     private Session createUserSession(int userId) {
-        var session = setupSessionMenu(new Session(userId));
-        saveInDB(session);
-        saveInCache(session);
-        return session;
+        return null;
     }
 
 
@@ -35,28 +32,6 @@ class SessionProvider {
 
     private Commands menuCommands;
     private Commands gameCommands;
-
-    private Session setupSessionMenu(Session session) {
-        return session
-                .setEventProvider(menuEventProvider)
-                .setCommands(menuCommands)
-                .setDefaultEventDeck();
-    }
-
-    private Session setupSessionGame(Session session) {
-        return session
-                .setEventProvider(gameEventProvider)
-                .setCommands(gameCommands)
-                .setDefaultEventDeck();
-    }
-
-    private Session setupSessionGamePlus(Session session) {
-        return session
-                .setEventProvider(gamePlusEventProvider)
-                .setCommands(gameCommands)
-                .setDefaultEventDeck();
-    }
-
 
     private HashMap<Integer, Session> cache = new HashMap<>();
     private HashMap<Integer, Timer> cacheCleaner = new HashMap<>();
@@ -100,7 +75,6 @@ class SessionProvider {
     }
 
 
-    // TODO below: implement DB
     private void saveInDB(Session session) {
 
     }
@@ -110,8 +84,6 @@ class SessionProvider {
     }
 
     private Session getFromDB(int userId) {
-        Session session = new Session(userId);
-        saveInCache(session);
         return null;
     }
 }
