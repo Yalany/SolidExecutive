@@ -2,58 +2,106 @@ package model.session;
 
 import java.util.HashMap;
 
-class GameResources {
+final class GameResources {
 
-    private HashMap<String, Integer> resources = new HashMap<>();
+    private static class GameResource {
+        private final String name;
+        private int value;
+
+        GameResource(String name, int value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        String getName() {
+            return name;
+        }
+
+        int getValue() {
+            return value;
+        }
+
+        void setValue(int value) {
+            this.value = value;
+        }
+
+        void modifyValue(int addition) {
+            this.value += addition;
+        }
+    }
+
+    private final HashMap<String, GameResource> resources = new HashMap<>();
 
     GameResources() {
     }
 
-    void addType(String resourceName, int startingAmount) {
-        resources.put(resourceName, startingAmount);
+    void addType(String id, String displayName, int startingAmount) {
+        resources.put(id, new GameResource(displayName, startingAmount));
     }
 
-    boolean haveAmount(String resourceName, int amount) {
-        return resources.get(resourceName) >= amount;
+    String getDisplayName(String id) {
+        return resources.get(id).getName();
     }
 
-    void setAmount(String resourceName, int amount) {
-        resources.put(resourceName, amount);
+    boolean haveAmount(String id, int amount) {
+        return resources.get(id).getValue() >= amount;
     }
 
-    void modifyAmount(String resourceName, int modification) {
-        var currentAmount = resources.get(resourceName);
-        resources.put(resourceName, currentAmount + modification);
+    void setAmount(String id, int amount) {
+        resources.get(id).setValue(amount);
+    }
+
+    void modifyAmount(String id, int modification) {
+        resources.get(id).modifyValue(modification);
     }
 
     public enum Type {
-        GOVERNMENT      ("Government relationship", 75, 100, 50),
-        CITIZENS        ("Citizens relationship", 50, 75, 25),
-        INFRASTRUCTURE  ("Infrastructure score", 5000, 7500, 2500),
-        MONEY           ("Money", 10000, 15000, 5000);
+        GOVERNMENT("Government relationship", "",
+                100, 100, 75, 50),
 
-        private String name;
-        private int defaultValue;
+        CITIZENS("Citizens relationship", "",
+                100, 75, 50, 25),
+
+        INFRASTRUCTURE("Infrastructure score", "",
+                10000, 7500, 5000, 2500),
+
+        MONEY("Money", "",
+                20000, 15000, 10000, 5000);
+
+        private String id;
+        private String displayName;
+        private int normalValue;
         private int easyValue;
         private int hardValue;
+        private int tutorialValue;
 
-        Type(String name, int defaultValue, int easyValue, int hardValue) {
-            this.name = name;
-            this.defaultValue = defaultValue;
+        Type(String id, String displayName, int tutorialValue, int easyValue, int normalValue, int hardValue) {
+            this.id = id;
+            this.displayName = displayName;
+            this.tutorialValue = tutorialValue;
             this.easyValue = easyValue;
+            this.normalValue = normalValue;
             this.hardValue = hardValue;
         }
 
-        public String getName() {
-            return name;
+        public String getId() {
+            return id;
         }
 
-        public int getDefaultValue() {
-            return defaultValue;
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public int getTutorialValue() {
+            return tutorialValue;
         }
 
         public int getEasyValue() {
             return easyValue;
+        }
+
+        public int getNormalValue() {
+            return normalValue;
         }
 
         public int getHardValue() {

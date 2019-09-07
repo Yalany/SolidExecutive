@@ -5,20 +5,27 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Session {
 
-    private SessionOperator sessionOperator;
+    private final SessionOperator sessionOperator;
 
-    private EventProvider eventProvider;
-    private Commands commands;
+    private final EventProvider eventProvider;
+    private final Commands commands;
+
+    private final EventDeck eventDeck;
+    private final GameResources gameResources;
 
     private Event currentEvent;
-    private EventDeck eventDeck;
-    private GameResources gameResources;
     private int currentMonth;
 
-    private User user;
+    private final User user;
 
-    private Session() {
-        // private constructor
+    private Session(EventProvider eventProvider, Commands commands, EventDeck eventDeck, GameResources gameResources, User user) {
+        sessionOperator = new SessionOperator(this);
+        this.eventProvider = eventProvider;
+        this.commands = commands;
+        this.eventDeck = eventDeck;
+        this.gameResources = gameResources;
+        this.currentEvent = eventProvider.getEventById(eventDeck.pop(), this);
+        this.user = user;
     }
 
 
@@ -43,12 +50,13 @@ public class Session {
 
     public void acceptUserIntent(String intent) {
         if (currentEvent.canAcceptIntent(intent)) {
-            currentEvent.acceptIntent(intent, sessionOperator);
+            currentEvent.acceptIntent(intent);
             setCurrentEvent(eventDeck.pop());
             return;
         }
-        if (commands.canAcceptCommand(intent))
+        if (commands.canAcceptCommand(intent)) {
             commands.acceptCommand(intent, this);
+        }
 
         // TODO: actions if intent is unacceptable
     }
@@ -66,6 +74,10 @@ public class Session {
     }
 
     // for operator
+    SessionOperator getOperator() {
+        return sessionOperator;
+    }
+
     EventDeck getEventDeck() {
         return eventDeck;
     }
@@ -76,57 +88,49 @@ public class Session {
 
     // builder
     public static Builder builder() {
-        return new Session().new Builder();
+        return new Builder();
     }
 
-    public class Builder {
+    public static final class Builder {
+
+        private EventProvider eventProvider;
+        private Commands commands;
+
+        private EventDeck eventDeck;
+        private GameResources gameResources;
+
+        private User user;
 
         private Builder() {
-            // private constructor
-        }
-
-        public Builder setUser(String id) {
-            Session.this.user = new User(id);
-            return this;
         }
 
         public Builder setEventProvider(EventProvider eventProvider) {
-            Session.this.eventProvider = eventProvider;
+            this.eventProvider = eventProvider;
             return this;
         }
 
         public Builder setCommands(Commands commands) {
-            Session.this.commands = commands;
+            this.commands = commands;
             return this;
         }
 
-        public Builder setEventDeck(String preset) {
-            if ("Standard".equals(preset))
-                Session.this.eventDeck = new EventDeck();
-            else if ("Subscribed".equals(preset))
-                Session.this.eventDeck = new EventDeck();
-            else if ("Tutorial".equals(preset))
-                Session.this.eventDeck = new TutorialEventDeck();
+        public Builder setEventDeck(EventDeck eventDeck) {
+            this.eventDeck = eventDeck;
             return this;
         }
 
-        public Builder setGameResources(String preset) {
-            Session.this.gameResources = new GameResources();
-            for (GameResources.Type type : GameResources.Type.values())
-                if ("Easy".equals(preset))
-                    Session.this.gameResources.addType(type.getName(), type.getEasyValue());
-                else if ("Normal".equals(preset))
-                    Session.this.gameResources.addType(type.getName(), type.getDefaultValue());
-                else if ("Hard".equals(preset))
-                    Session.this.gameResources.addType(type.getName(), type.getHardValue());
+        public Builder setGameResources(GameResources gameResources) {
+            this.gameResources = gameResources;
+            return this;
+        }
+
+        public Builder setUser(User user) {
+            this.user = user;
             return this;
         }
 
         public Session build() {
-            Session.this.sessionOperator = new SessionOperator(Session.this);
-            Session.this.currentEvent = Session.this.eventProvider.getEventById(Session.this.eventDeck.pop(), Session.this);
-            Session.this.currentMonth = 0;
-            return Session.this;
+            return new Session(eventProvider, commands, eventDeck, gameResources, user);
         }
     }
 }

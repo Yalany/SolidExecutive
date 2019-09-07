@@ -1,27 +1,17 @@
 package model.session;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Event {
+public final class Event {
 
-    private String text;
-    private List<Button> buttons;
+    private final String text;
+    private final List<Button> buttons;
 
-    public Event(String text, List<Button> buttons) {
+    private Event(final String text, final List<Button> buttons) {
         this.text = text;
         this.buttons = buttons;
-    }
-
-    Event setText(String text) {
-        this.text = text;
-        return this;
-    }
-
-    Event addButton(Button button) {
-        buttons.add(button);
-        return this;
     }
 
     String getText() {
@@ -31,17 +21,50 @@ public class Event {
     List<String> getButtonsText() {
         return buttons.stream()
                 .map(Button::getName)
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     boolean canAcceptIntent(String intent) {
         return buttons.stream()
-                .anyMatch(btn -> btn.contains(intent));
+                .anyMatch(btn -> btn.containsIntent(intent));
     }
 
-    void acceptIntent(String intent, SessionOperator operator) {
+    void acceptIntent(String intent) {
         buttons.stream()
-                .filter(btn -> btn.contains(intent))
-                .forEach(btn -> btn.activate(operator));
+                .filter(btn -> btn.containsIntent(intent))
+                .forEach(Button::activate);
+    }
+
+    // builder
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+
+        private String text;
+        private List<Button> buttons;
+
+        private Builder() {
+            buttons = new ArrayList<>();
+        }
+
+        Builder setText(String text) {
+            this.text = text;
+            return this;
+        }
+
+        Builder addButton(Button button) {
+            buttons.add(button);
+            return this;
+        }
+
+        Event build() {
+            if (text == null)
+                throw new IllegalStateException("text can't be null");
+            if (buttons.isEmpty())
+                throw new IllegalStateException("should have at least one button");
+            return new Event(text, buttons);
+        }
     }
 }

@@ -11,6 +11,7 @@ public class Commands {
 //    public final static String INTENT_EXIT = "exit";
 //    public final static String INTENT_HELP = "help";
 
+    @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
     private List<Command> commands;
 
     boolean canAcceptCommand(String intent) {

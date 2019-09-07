@@ -1,53 +1,74 @@
 package model.session;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class Button {
 
-    private String name;
-    private List<String> intents;
-    private List<Operation> operations;
+public final class Button {
 
-    Button(String name, List<String> intents, List<Operation> operations) {
+    private final String name;
+    private final List<String> intents;
+    private final List<Operation> operations;
+    private final Session context;
+
+    private Button(final String name, final List<String> intents, final List<Operation> operations, final Session context) {
         this.name = name;
         this.intents = intents;
         this.operations = operations;
-    }
-
-    Button setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    Button addIntent(String intent) {
-        intents.add(intent);
-        return this;
-    }
-
-    Button addOperation(Operation operation) {
-        operations.add(operation);
-        return this;
+        this.context = context;
     }
 
     String getName() {
         return name;
     }
 
-    boolean contains(String intent) {
+    boolean containsIntent(String intent) {
         return intents.contains(intent);
     }
 
-    void activate(SessionOperator operator) {
-        operations.forEach(o -> o.activate(operator));
+    void activate() {
+        operations.forEach(o -> o.activate(context.getOperator()));
     }
 
-    // TODO: check if option can be used with current player resources
-    boolean doesFitSession(Session session) {
-        return false;
+    // builder
+    public static Builder builder() {
+        return new Builder();
     }
 
-    // TODO: check if option requires subscription
-    boolean isPaid() {
-        return false;
+    public static final class Builder {
+
+        private String name;
+        private List<String> intents;
+        private List<Operation> operations;
+
+        private Builder() {
+            intents = new ArrayList<>();
+            operations = new ArrayList<>();
+        }
+
+        Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        Builder addIntent(String intent) {
+            intents.add(intent);
+            return this;
+        }
+
+        Builder addOperation(Operation operation) {
+            operations.add(operation);
+            return this;
+        }
+
+        Button build(Session forContext) {
+            if (name == null)
+                throw new IllegalStateException("text can't be null");
+            if (intents.isEmpty())
+                throw new IllegalStateException("should have at least one intent");
+            if (operations.isEmpty())
+                throw new IllegalStateException("should have at least one operation");
+            return new Button(name, intents, operations, forContext);
+        }
     }
 }
