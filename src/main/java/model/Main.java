@@ -1,25 +1,36 @@
 package model;
 
+import model.session.Commands;
+import model.session.EventProvider;
 import model.session.Session;
+import model.session.eventprovider.GameEventProvider;
 
 import java.util.Scanner;
 
 public class Main {
 
-    private static SessionProvider sessionProvider = new SessionProvider();
-
     public static void main(String[] args) {
-        var userId = 1984;
+        var userId = "12349f91f91";
         var userIntent = "NEW USER";
 
-        Session session = sessionProvider.getSessionById(userId);
+        EventProvider eventProvider = new GameEventProvider();
+        Commands commands = new Commands();
+
+        var session = Session.builder()
+                .setUser(userId)
+                .setEventDeck("Standard")
+                .setGameResources("Normal")
+                .setEventProvider(eventProvider)
+                .setCommands(commands)
+                .build();
+
         session.acceptUserIntent(userIntent);
 
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.print("Enter intent: ");
-            String input = scanner.nextLine();
+            var input = scanner.nextLine();
 
             if (input.equals("q")) {
                 System.out.println("Exit!");

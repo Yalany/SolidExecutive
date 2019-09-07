@@ -2,7 +2,7 @@ package model.session;
 
 import java.util.List;
 
-@SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
+@SuppressWarnings("unused")
 public class Session {
 
     private SessionOperator sessionOperator;
@@ -15,43 +15,19 @@ public class Session {
     private GameResources gameResources;
     private int currentMonth;
 
-    private final User user;
+    private User user;
 
-    public Session(EventProvider eventProvider, Commands commands, int userId) {
-        this(eventProvider, commands, null, new EventDeck(), null, 0, new User(userId));
+    private Session() {
+        // private constructor
     }
 
-    public Session(EventProvider eventProvider,
-                   Commands commands,
-                   Event currentEvent,
-                   EventDeck eventDeck,
-                   GameResources gameResources,
-                   int currentMonth,
-                   User user) {
-        this.sessionOperator = new SessionOperator(this);
-        this.eventProvider = eventProvider;
-        this.commands = commands;
-        this.currentEvent = currentEvent;
-        this.eventDeck = eventDeck;
-        this.gameResources = gameResources;
-        this.currentMonth = currentMonth;
-        this.user = user;
+
+    public int getCurrentMonth() {
+        return currentMonth;
     }
 
-    public Session setProcessingContext(EventProvider eventProvider, Commands commands) {
-        this.eventProvider = eventProvider;
-        this.commands = commands;
-        return this;
-    }
-
-    public Session setEventDeck(EventDeck eventDeck) {
-        this.eventDeck = eventDeck;
-        setCurrentEvent(eventDeck.pop());
-        return this;
-    }
-
-    public Session setGameResources(GameResources gameResources) {
-        this.gameResources = gameResources;
+    public Session resetMonth() {
+        currentMonth = 0;
         return this;
     }
 
@@ -60,10 +36,6 @@ public class Session {
         return this;
     }
 
-    public Session resetMonth() {
-        currentMonth = 0;
-        return this;
-    }
 
     private void setCurrentEvent(int eventId) {
         currentEvent = eventProvider.getEventById(eventId, this);
@@ -89,11 +61,7 @@ public class Session {
         return currentEvent.getButtonsText();
     }
 
-    public int getCurrentMonth() {
-        return currentMonth;
-    }
-
-    public int getId() {
+    public String getId() {
         return user.getId();
     }
 
@@ -106,7 +74,59 @@ public class Session {
         return gameResources;
     }
 
-    void exitGame() {
+    // builder
+    public static Builder builder() {
+        return new Session().new Builder();
+    }
 
+    public class Builder {
+
+        private Builder() {
+            // private constructor
+        }
+
+        public Builder setUser(String id) {
+            Session.this.user = new User(id);
+            return this;
+        }
+
+        public Builder setEventProvider(EventProvider eventProvider) {
+            Session.this.eventProvider = eventProvider;
+            return this;
+        }
+
+        public Builder setCommands(Commands commands) {
+            Session.this.commands = commands;
+            return this;
+        }
+
+        public Builder setEventDeck(String preset) {
+            if ("Standard".equals(preset))
+                Session.this.eventDeck = new EventDeck();
+            else if ("Subscribed".equals(preset))
+                Session.this.eventDeck = new EventDeck();
+            else if ("Tutorial".equals(preset))
+                Session.this.eventDeck = new TutorialEventDeck();
+            return this;
+        }
+
+        public Builder setGameResources(String preset) {
+            Session.this.gameResources = new GameResources();
+            for (GameResources.Type type : GameResources.Type.values())
+                if ("Easy".equals(preset))
+                    Session.this.gameResources.addType(type.getName(), type.getEasyValue());
+                else if ("Normal".equals(preset))
+                    Session.this.gameResources.addType(type.getName(), type.getDefaultValue());
+                else if ("Hard".equals(preset))
+                    Session.this.gameResources.addType(type.getName(), type.getHardValue());
+            return this;
+        }
+
+        public Session build() {
+            Session.this.sessionOperator = new SessionOperator(Session.this);
+            Session.this.currentEvent = Session.this.eventProvider.getEventById(Session.this.eventDeck.pop(), Session.this);
+            Session.this.currentMonth = 0;
+            return Session.this;
+        }
     }
 }

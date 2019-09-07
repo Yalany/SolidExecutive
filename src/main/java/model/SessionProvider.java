@@ -13,7 +13,7 @@ class SessionProvider {
     // milliseconds since last action to remove session from cache
     private final static long SESSION_TIMEOUT = 300000;
 
-    Session getSessionById(int userId) {
+    Session getSessionById(String userId) {
         if (containedInCache(userId))
             return getFromCache(userId);
         if (containedInDB(userId))
@@ -21,7 +21,7 @@ class SessionProvider {
         return createUserSession(userId);
     }
 
-    private Session createUserSession(int userId) {
+    private Session createUserSession(String userId) {
         return null;
     }
 
@@ -33,13 +33,13 @@ class SessionProvider {
     private Commands menuCommands;
     private Commands gameCommands;
 
-    private HashMap<Integer, Session> cache = new HashMap<>();
-    private HashMap<Integer, Timer> cacheCleaner = new HashMap<>();
+    private HashMap<String, Session> cache = new HashMap<>();
+    private HashMap<String, Timer> cacheCleaner = new HashMap<>();
 
     private class SessionTimeout extends TimerTask {
-        private int sessionId;
+        private String sessionId;
 
-        SessionTimeout(int sessionId) {
+        SessionTimeout(String sessionId) {
             this.sessionId = sessionId;
         }
 
@@ -62,15 +62,15 @@ class SessionProvider {
         cacheCleaner.put(sessionId, timeoutTimer);
     }
 
-    private boolean containedInCache(int userId) {
+    private boolean containedInCache(String userId) {
         return cache.containsKey(userId);
     }
 
-    private Session getFromCache(int userId) {
+    private Session getFromCache(String userId) {
         return cache.get(userId);
     }
 
-    private Session removeFromCache(int userId) {
+    private Session removeFromCache(String userId) {
         return cache.remove(userId);
     }
 
@@ -79,11 +79,11 @@ class SessionProvider {
 
     }
 
-    private boolean containedInDB(int userId) {
+    private boolean containedInDB(String userId) {
         return false;
     }
 
-    private Session getFromDB(int userId) {
+    private Session getFromDB(String userId) {
         return null;
     }
 }

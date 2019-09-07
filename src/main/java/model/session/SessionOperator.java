@@ -19,12 +19,4 @@ public class SessionOperator {
     public void changeResources(String resourceName, int resourceAmount) {
         context.getGameResources().modifyAmount(resourceName, resourceAmount);
     }
-
-    public void endMonth() {
-        context.nextMonth();
-    }
-
-    public void exitGame() {
-        context.exitGame();
-    }
 }

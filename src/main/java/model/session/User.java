@@ -2,19 +2,19 @@ package model.session;
 
 public class User {
 
-    private int id;
+    private String id;
     private int gamesFinished;
     private long subscriptionEndTime;
     private boolean haveActiveGame;
 
-    User(int id) {
+    User(String  id) {
         this.id = id;
         gamesFinished = 0;
         subscriptionEndTime = System.currentTimeMillis();
         haveActiveGame = false;
     }
 
-    int getId() {
+    String getId() {
         return id;
     }
 

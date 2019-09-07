@@ -14,7 +14,7 @@ class EventDeck {
         this(60, true);
     }
 
-    private EventDeck(int size, boolean isEndless) {
+    EventDeck(int size, boolean isEndless) {
         this.size = size;
         this.pointer = 0;
         this.events = new int[size];
@@ -80,6 +80,37 @@ class EventDeck {
             if (pointer + steps >= size)
                 pointer -= size;
             pointer += steps;
+        }
+    }
+
+    public enum Type {
+        TUTORIAL("Tutorial"),
+        STANDARD("Standard");
+
+        private boolean isEndless;
+        private int size;
+
+        Type(String preset) {
+            switch (preset) {
+                case "Tutorial":
+                    isEndless = false;
+                    size = 20;
+                    break;
+                case "Standard":
+                    isEndless = true;
+                    size = 60;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public boolean isEndless() {
+            return isEndless;
+        }
+
+        public int getSize() {
+            return size;
         }
     }
 }
