@@ -18,7 +18,9 @@ final class Repository {
     static EventProvider getEventProvider(String type) {
         return (id, context) -> Event.builder()
                 .setText("Это тестовое событие. В нём всего два варианта ответа," +
-                        " первый портит вашу репутацию у властей на 10%, второй на столько же улучшает. type=" + type)
+                        " первый портит вашу репутацию у властей на 10%, второй на столько же улучшает."
+                        + " type=" + type + ", gov=" + context.getGameResources().getAmount("gov")
+                        + ", nextEventId=" + context.getEventDeck().peek())
                 .addButton(Button.builder()
                         .setName("Первый вариант")
                         .addIntent("1")

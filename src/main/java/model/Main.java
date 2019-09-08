@@ -21,8 +21,11 @@ public class Main {
                     .setEventProvider(
                             user.isSubscribed() ? Repository.getEventProvider("gamePlus")
                                     : Repository.getEventProvider("game"))
+                    .setCommands(Repository.getCommands("menu"))
                     .setCommands(Repository.getCommands("game"))
+                    .setEventDeck(Repository.getEventDeck("tutorial"))
                     .setEventDeck(Repository.getEventDeck("standard"))
+                    .setGameResources(Repository.getGameResources("tutorial"))
                     .setGameResources(Repository.getGameResources("standard"))
                     .build();
 

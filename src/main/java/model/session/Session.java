@@ -2,7 +2,7 @@ package model.session;
 
 import java.util.List;
 
-public class Session {
+public final class Session {
 
     private final SessionOperator sessionOperator;
 
@@ -67,11 +67,11 @@ public class Session {
         return sessionOperator;
     }
 
-    EventDeck getEventDeck() {
+    public EventDeck getEventDeck() {
         return eventDeck;
     }
 
-    GameResources getGameResources() {
+    public GameResources getGameResources() {
         return gameResources;
     }
 

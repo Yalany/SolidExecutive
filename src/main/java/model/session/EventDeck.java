@@ -18,6 +18,10 @@ public final class EventDeck {
         IntStream.range(0, size - 1).forEach(i -> this.events[i] = 0);
     }
 
+    public int peek() {
+        return events[pointer];
+    }
+
     // puts event in place of first random event starting from specified offset
     void shuffleIn(int eventId, int offset) {
         if (offset < 0)

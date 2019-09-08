@@ -15,7 +15,7 @@ public final class GameResources {
         return resources.get(id).getDisplayName();
     }
 
-    int getAmount(String id) {
+    public int getAmount(String id) {
         return resources.get(id).getValue();
     }
 
