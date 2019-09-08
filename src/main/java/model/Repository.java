@@ -1,6 +1,7 @@
 package model;
 
 import model.session.*;
+import model.session.command.Repeat;
 import model.session.operation.ChangeResource;
 
 final class Repository {
@@ -17,7 +18,7 @@ final class Repository {
     static EventProvider getEventProvider(String type) {
         return (id, context) -> Event.builder()
                 .setText("Это тестовое событие. В нём всего два варианта ответа," +
-                        " первый портит вашу репутацию у властей на 10%, второй на столько же улучшает.")
+                        " первый портит вашу репутацию у властей на 10%, второй на столько же улучшает. type=" + type)
                 .addButton(Button.builder()
                         .setName("Первый вариант")
                         .addIntent("1")
@@ -36,7 +37,9 @@ final class Repository {
     }
 
     static Commands getCommands(String type) {
-        return new Commands();
+        return Commands.builder()
+                .addCommand(new Repeat())
+                .build();
     }
 
     static EventDeck getEventDeck(String preset) {
