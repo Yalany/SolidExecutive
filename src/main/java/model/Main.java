@@ -1,9 +1,7 @@
 package model;
 
-import model.session.Commands;
-import model.session.EventProvider;
 import model.session.Session;
-import model.session.eventprovider.GameEventProvider;
+import model.session.User;
 
 import java.util.Scanner;
 
@@ -11,20 +9,22 @@ public class Main {
 
     public static void main(String[] args) {
         var userId = "12349f91f91";
-        var userIntent = "NEW USER";
 
-        EventProvider eventProvider = new GameEventProvider();
-        Commands commands = new Commands();
+        User user = Repository.getUser(userId);
 
-        var session = Session.builder()
-                .setUser(userId)
-                .setEventDeck("Standard")
-                .setGameResources("Normal")
-                .setEventProvider(eventProvider)
-                .setCommands(commands)
-                .build();
+        Session session;
 
-        session.acceptUserIntent(userIntent);
+        if (user.haveActiveGame())
+            session = Repository.getSession(userId);
+        else
+            session = Session.builder()
+                    .setEventProvider(
+                            user.isSubscribed() ? Repository.getEventProvider("gamePlus")
+                                    : Repository.getEventProvider("game"))
+                    .setCommands(Repository.getCommands("game"))
+                    .setEventDeck(Repository.getEventDeck("standard"))
+                    .setGameResources(Repository.getGameResources("standard"))
+                    .build();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -43,8 +43,8 @@ public class Main {
             var eventText = session.getEventText();
             var buttonsText = session.getButtonsText();
 
-            StringBuilder buttons = new StringBuilder("Buttons:");
-            buttonsText.forEach(b -> buttons.append(" ").append(b));
+            StringBuilder buttons = new StringBuilder("Buttons:\n");
+            buttonsText.forEach(b -> buttons.append(b).append(" | "));
 
             System.out.println(eventText);
             System.out.println(buttons.toString());

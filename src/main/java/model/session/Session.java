@@ -2,7 +2,6 @@ package model.session;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
 public class Session {
 
     private final SessionOperator sessionOperator;
@@ -16,26 +15,18 @@ public class Session {
     private Event currentEvent;
     private int currentMonth;
 
-    private final User user;
-
-    private Session(EventProvider eventProvider, Commands commands, EventDeck eventDeck, GameResources gameResources, User user) {
+    private Session(EventProvider eventProvider, Commands commands, EventDeck eventDeck, GameResources gameResources) {
         sessionOperator = new SessionOperator(this);
         this.eventProvider = eventProvider;
         this.commands = commands;
         this.eventDeck = eventDeck;
         this.gameResources = gameResources;
-        this.currentEvent = eventProvider.getEventById(eventDeck.pop(), this);
-        this.user = user;
+        this.currentMonth = 0;
+        nextEvent();
     }
 
-
-    public int getCurrentMonth() {
-        return currentMonth;
-    }
-
-    public Session resetMonth() {
-        currentMonth = 0;
-        return this;
+    private void nextEvent() {
+        currentEvent = eventProvider.getEventById(eventDeck.pop(), this);
     }
 
     public Session nextMonth() {
@@ -43,15 +34,11 @@ public class Session {
         return this;
     }
 
-
-    private void setCurrentEvent(int eventId) {
-        currentEvent = eventProvider.getEventById(eventId, this);
-    }
-
+    // Input
     public void acceptUserIntent(String intent) {
         if (currentEvent.canAcceptIntent(intent)) {
             currentEvent.acceptIntent(intent);
-            setCurrentEvent(eventDeck.pop());
+            nextEvent();
             return;
         }
         if (commands.canAcceptCommand(intent)) {
@@ -61,6 +48,7 @@ public class Session {
         // TODO: actions if intent is unacceptable
     }
 
+    // Output
     public String getEventText() {
         return currentEvent.getText();
     }
@@ -69,8 +57,9 @@ public class Session {
         return currentEvent.getButtonsText();
     }
 
-    public String getId() {
-        return user.getId();
+    // for commands
+    public int getCurrentMonth() {
+        return currentMonth;
     }
 
     // for operator
@@ -99,8 +88,6 @@ public class Session {
         private EventDeck eventDeck;
         private GameResources gameResources;
 
-        private User user;
-
         private Builder() {
         }
 
@@ -124,13 +111,8 @@ public class Session {
             return this;
         }
 
-        public Builder setUser(User user) {
-            this.user = user;
-            return this;
-        }
-
         public Session build() {
-            return new Session(eventProvider, commands, eventDeck, gameResources, user);
+            return new Session(eventProvider, commands, eventDeck, gameResources);
         }
     }
 }

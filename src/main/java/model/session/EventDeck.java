@@ -2,7 +2,7 @@ package model.session;
 
 import java.util.stream.IntStream;
 
-class EventDeck {
+public final class EventDeck {
 
     private final int[] events;
     private final int size;
@@ -10,7 +10,7 @@ class EventDeck {
 
     private int pointer; // points at next player event
 
-    EventDeck(int size, boolean isEndless) {
+    public EventDeck(int size, boolean isEndless) {
         this.size = size;
         this.pointer = 0;
         this.events = new int[size];

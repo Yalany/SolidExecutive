@@ -1,20 +1,52 @@
 package model.session;
 
 import java.util.HashMap;
+import java.util.Map;
 
-final class GameResources {
+public final class GameResources {
+
+    private final Map<String, GameResource> resources;
+
+    private GameResources(Map<String, GameResource> resources) {
+        this.resources = resources;
+    }
+
+    String getDisplayName(String id) {
+        return resources.get(id).getDisplayName();
+    }
+
+    int getAmount(String id) {
+        return resources.get(id).getValue();
+    }
+
+    boolean haveAmount(String id, int amount) {
+        return resources.get(id).getValue() >= amount;
+    }
+
+    void setAmount(String id, int amount) {
+        resources.get(id).setValue(amount);
+    }
+
+    void modifyAmount(String id, int modification) {
+        resources.get(id).modifyValue(modification);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
 
     private static class GameResource {
-        private final String name;
+        private final String displayName;
         private int value;
 
-        GameResource(String name, int value) {
-            this.name = name;
+        GameResource(String displayName, int value) {
+            this.displayName = displayName;
             this.value = value;
         }
 
-        String getName() {
-            return name;
+        String getDisplayName() {
+            return displayName;
         }
 
         int getValue() {
@@ -30,82 +62,22 @@ final class GameResources {
         }
     }
 
-    private final HashMap<String, GameResource> resources = new HashMap<>();
 
-    GameResources() {
-    }
+    public static final class Builder {
 
-    void addType(String id, String displayName, int startingAmount) {
-        resources.put(id, new GameResource(displayName, startingAmount));
-    }
+        private HashMap<String, GameResource> resources;
 
-    String getDisplayName(String id) {
-        return resources.get(id).getName();
-    }
-
-    boolean haveAmount(String id, int amount) {
-        return resources.get(id).getValue() >= amount;
-    }
-
-    void setAmount(String id, int amount) {
-        resources.get(id).setValue(amount);
-    }
-
-    void modifyAmount(String id, int modification) {
-        resources.get(id).modifyValue(modification);
-    }
-
-    public enum Type {
-        GOVERNMENT("Government relationship", "",
-                100, 100, 75, 50),
-
-        CITIZENS("Citizens relationship", "",
-                100, 75, 50, 25),
-
-        INFRASTRUCTURE("Infrastructure score", "",
-                10000, 7500, 5000, 2500),
-
-        MONEY("Money", "",
-                20000, 15000, 10000, 5000);
-
-        private String id;
-        private String displayName;
-        private int normalValue;
-        private int easyValue;
-        private int hardValue;
-        private int tutorialValue;
-
-        Type(String id, String displayName, int tutorialValue, int easyValue, int normalValue, int hardValue) {
-            this.id = id;
-            this.displayName = displayName;
-            this.tutorialValue = tutorialValue;
-            this.easyValue = easyValue;
-            this.normalValue = normalValue;
-            this.hardValue = hardValue;
+        private Builder() {
+            resources = new HashMap<>();
         }
 
-        public String getId() {
-            return id;
+        public Builder addResource(String id, String displayName, int startingValue) {
+            resources.put(id, new GameResource(displayName, startingValue));
+            return this;
         }
 
-        public String getDisplayName() {
-            return displayName;
-        }
-
-        public int getTutorialValue() {
-            return tutorialValue;
-        }
-
-        public int getEasyValue() {
-            return easyValue;
-        }
-
-        public int getNormalValue() {
-            return normalValue;
-        }
-
-        public int getHardValue() {
-            return hardValue;
+        public GameResources build() {
+            return new GameResources(resources);
         }
     }
 }

@@ -1,6 +1,5 @@
 package prototype;
 
-//@SuppressWarnings("WeakerAccess")
 public class Session {
 
     // commands formatted string data
@@ -54,24 +53,22 @@ public class Session {
     }
 
     private String parseCommand(String intent) {
-        if (intent.equals(INTENT_MONTH)) {
-            playerState.setSystemEvent(intent);
-            return currentMonth();
+        switch (intent) {
+            case INTENT_MONTH:
+                playerState.setSystemEvent(intent);
+                return currentMonth();
+            case INTENT_RESOURCES:
+                playerState.setSystemEvent(intent);
+                return resourcesStatus();
+            case INTENT_REPEAT:
+                return commandRepeat();
+            case INTENT_EXIT:
+                return exitGame();
+            case INTENT_CATCH_ALL:
+                return catchAll();
+            default:
+                throw new IllegalArgumentException("illegal intent");
         }
-        if (intent.equals(INTENT_RESOURCES)) {
-            playerState.setSystemEvent(intent);
-            return resourcesStatus();
-        }
-        if (intent.equals(INTENT_REPEAT)) {
-            return commandRepeat();
-        }
-        if (intent.equals(INTENT_EXIT)) {
-            return exitGame();
-        }
-        if (intent.equals(INTENT_CATCH_ALL)) {
-            return catchAll();
-        }
-        throw new IllegalArgumentException("illegal intent");
     }
 
     private String commandRepeat() {

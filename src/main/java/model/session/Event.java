@@ -49,17 +49,17 @@ public final class Event {
             buttons = new ArrayList<>();
         }
 
-        Builder setText(String text) {
+        public Builder setText(String text) {
             this.text = text;
             return this;
         }
 
-        Builder addButton(Button button) {
+        public Builder addButton(Button button) {
             buttons.add(button);
             return this;
         }
 
-        Event build() {
+        public Event build() {
             if (text == null)
                 throw new IllegalStateException("text can't be null");
             if (buttons.isEmpty())

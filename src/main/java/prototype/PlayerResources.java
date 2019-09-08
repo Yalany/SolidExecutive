@@ -38,8 +38,8 @@ class PlayerResources {
     boolean acceptTransaction(ResourcesTransaction transaction) {
         if (!validateTransaction(transaction))
             return false;
-        changeCitizensRelation(transaction);
         changeGovernmentRelation(transaction);
+        changeCitizensRelation(transaction);
         changeInfrastructure(transaction);
         changeMoney(transaction);
         return true;

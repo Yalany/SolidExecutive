@@ -7,14 +7,14 @@ public class User {
     private long subscriptionEndTime;
     private boolean haveActiveGame;
 
-    User(String  id) {
+    public User(String id) {
         this.id = id;
         gamesFinished = 0;
         subscriptionEndTime = System.currentTimeMillis();
         haveActiveGame = false;
     }
 
-    String getId() {
+    public String getId() {
         return id;
     }
 
@@ -27,7 +27,7 @@ public class User {
         return subscriptionEndTime;
     }
 
-    public boolean isHaveActiveGame() {
+    public boolean haveActiveGame() {
         return haveActiveGame;
     }
 

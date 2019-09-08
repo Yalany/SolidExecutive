@@ -1,6 +1,5 @@
 package prototype;
 
-@SuppressWarnings({"SameParameterValue", "unused"})
 class Event {
 
     private Session session;

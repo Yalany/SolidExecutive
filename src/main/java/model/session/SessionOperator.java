@@ -1,10 +1,10 @@
 package model.session;
 
-public class SessionOperator {
+public final class SessionOperator {
 
-    private Session context;
+    private final Session context;
 
-    SessionOperator(Session context) {
+    SessionOperator(final Session context) {
         this.context = context;
     }
 

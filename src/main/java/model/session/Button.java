@@ -40,35 +40,43 @@ public final class Button {
         private String name;
         private List<String> intents;
         private List<Operation> operations;
+        private Session context;
 
         private Builder() {
             intents = new ArrayList<>();
             operations = new ArrayList<>();
         }
 
-        Builder setName(String name) {
+        public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        Builder addIntent(String intent) {
+        public Builder addIntent(String intent) {
             intents.add(intent);
             return this;
         }
 
-        Builder addOperation(Operation operation) {
+        public Builder addOperation(Operation operation) {
             operations.add(operation);
             return this;
         }
 
-        Button build(Session forContext) {
+        public Builder setSession(Session context) {
+            this.context = context;
+            return this;
+        }
+
+        public Button build() {
             if (name == null)
                 throw new IllegalStateException("text can't be null");
             if (intents.isEmpty())
                 throw new IllegalStateException("should have at least one intent");
             if (operations.isEmpty())
                 throw new IllegalStateException("should have at least one operation");
-            return new Button(name, intents, operations, forContext);
+            if (context == null)
+                throw new IllegalStateException("should specify activation context");
+            return new Button(name, intents, operations, context);
         }
     }
 }
