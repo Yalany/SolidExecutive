@@ -8,7 +8,7 @@ class Event {
     private ResourcesTransaction initialTransaction;
     private Option[] options;
 
-    class Option {
+    private final class Option {
 
         private ResourcesTransaction transaction;
         private int eventToSchedule;

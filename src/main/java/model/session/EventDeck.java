@@ -4,20 +4,21 @@ import java.util.stream.IntStream;
 
 public final class EventDeck {
 
-    private final int[] events;
     private final int size;
     private final boolean isEndless;
+    private final int[] events;
 
     private int pointer; // points at next player event
 
     public EventDeck(int size, boolean isEndless) {
         this.size = size;
-        this.pointer = 0;
-        this.events = new int[size];
         this.isEndless = isEndless;
+        this.events = new int[size];
         IntStream.range(0, size - 1).forEach(i -> this.events[i] = 0);
+        this.pointer = 0;
     }
 
+    // for debug purposes
     public int peek() {
         return events[pointer];
     }

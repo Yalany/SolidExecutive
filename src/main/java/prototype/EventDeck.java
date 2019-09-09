@@ -5,10 +5,10 @@ import java.util.stream.IntStream;
 class EventDeck {
 
     private final static int DEFAULT_DECK_SIZE = 60;
-    private final static boolean IS_ENDLESS = false;
+    private final static boolean IS_ENDLESS = true;
 
-    private final int[] events;
     private final int size;
+    private final int[] events;
 
     private int pointer;    // points at next player event
 
@@ -18,9 +18,9 @@ class EventDeck {
 
     private EventDeck(int size) {
         this.size = size;
-        this.pointer = 0;
         this.events = new int[size];
         IntStream.range(0, size - 1).forEach(i -> this.events[i] = 0);
+        this.pointer = 0;
     }
 
     // puts event in place of first random event starting from specified offset

@@ -3,7 +3,7 @@ package model.session;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Commands {
+public final class Commands {
 
 //    public final static String INTENT_CATCH_ALL = "catch all";
 //    public final static String INTENT_REPEAT = "repeat";
@@ -20,13 +20,13 @@ public class Commands {
 
     boolean canAcceptCommand(String intent) {
         return commands.stream()
-                .anyMatch(c -> c.haveIntent(intent));
+                .anyMatch(command -> command.haveIntent(intent));
     }
 
     void acceptCommand(String intent, Session context) {
         commands.stream()
-                .filter(c -> c.haveIntent(intent))
-                .forEach(c -> c.execute(context));
+                .filter(command -> command.haveIntent(intent))
+                .forEach(command -> command.execute(context));
     }
 
     // builder

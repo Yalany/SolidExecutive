@@ -1,49 +1,44 @@
 package model.session;
 
-public class User {
+public final class User {
 
-    private String id;
-    private int gamesFinished;
+    private final String id;
+//    private int gamesFinished;
     private long subscriptionEndTime;
     private boolean haveActiveGame;
 
     public User(String id) {
         this.id = id;
-        gamesFinished = 0;
+//        gamesFinished = 0;
         subscriptionEndTime = System.currentTimeMillis();
         haveActiveGame = false;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-
-    public int getGamesFinished() {
-        return gamesFinished;
-    }
-
-    public long getSubscriptionEndTime() {
-        return subscriptionEndTime;
-    }
-
-    public boolean haveActiveGame() {
-        return haveActiveGame;
     }
 
     public boolean isSubscribed() {
         return System.currentTimeMillis() < subscriptionEndTime;
     }
 
-    public void incrementGamesFinished() {
-        this.gamesFinished++;
+    public boolean haveActiveGame() {
+        return haveActiveGame;
     }
 
-    public void setHaveActiveGame(boolean haveActiveGame) {
-        this.haveActiveGame = haveActiveGame;
+    public String getId() {
+        return id;
     }
 
-    public void setSubscriptionEndTime(long subscriptionEndTime) {
-        this.subscriptionEndTime = subscriptionEndTime;
-    }
+//    public int getGamesFinished() {
+//        return gamesFinished;
+//    }
+//
+//    public void incrementGamesFinished() {
+//        this.gamesFinished++;
+//    }
+//
+//    public void setSubscriptionEndTime(long subscriptionEndTime) {
+//        this.subscriptionEndTime = subscriptionEndTime;
+//    }
+//
+//    public void setHaveActiveGame(boolean haveActiveGame) {
+//        this.haveActiveGame = haveActiveGame;
+//    }
 }

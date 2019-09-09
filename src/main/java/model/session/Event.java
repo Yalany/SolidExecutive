@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class Event {
+final class Event {
 
     private final String text;
     private final List<Button> buttons;
+    private final Session context;
 
-    private Event(final String text, final List<Button> buttons) {
+    private Event(final String text, final List<Button> buttons, final Session context) {
         this.text = text;
         this.buttons = buttons;
+        this.context = context;
     }
 
     String getText() {
@@ -26,17 +28,17 @@ public final class Event {
 
     boolean canAcceptIntent(String intent) {
         return buttons.stream()
-                .anyMatch(btn -> btn.containsIntent(intent));
+                .anyMatch(button -> button.containsIntent(intent));
     }
 
     void acceptIntent(String intent) {
         buttons.stream()
-                .filter(btn -> btn.containsIntent(intent))
-                .forEach(Button::activate);
+                .filter(button -> button.containsIntent(intent))
+                .forEach(button -> button.activate(context));
     }
 
     // builder
-    public static Builder builder() {
+    static Builder builder() {
         return new Builder();
     }
 
@@ -44,27 +46,33 @@ public final class Event {
 
         private String text;
         private List<Button> buttons;
+        private Session context;
 
         private Builder() {
             buttons = new ArrayList<>();
         }
 
-        public Builder setText(String text) {
+        Builder setText(String text) {
             this.text = text;
             return this;
         }
 
-        public Builder addButton(Button button) {
+        Builder addButton(Button button) {
             buttons.add(button);
             return this;
         }
 
-        public Event build() {
+        Builder setContext(Session context) {
+            this.context = context;
+            return this;
+        }
+
+        Event build() {
             if (text == null)
                 throw new IllegalStateException("text can't be null");
             if (buttons.isEmpty())
                 throw new IllegalStateException("should have at least one button");
-            return new Event(text, buttons);
+            return new Event(text, buttons, context);
         }
     }
 }

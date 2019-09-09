@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public final class Button {
+final class Button {
 
     private final String name;
     private final List<String> intents;
     private final List<Operation> operations;
-    private final Session context;
 
-    private Button(final String name, final List<String> intents, final List<Operation> operations, final Session context) {
+    private Button(final String name, final List<String> intents, final List<Operation> operations) {
         this.name = name;
         this.intents = intents;
         this.operations = operations;
-        this.context = context;
     }
 
     String getName() {
@@ -26,12 +24,12 @@ public final class Button {
         return intents.contains(intent);
     }
 
-    void activate() {
+    void activate(Session context) {
         operations.forEach(o -> o.activate(context.getOperator()));
     }
 
     // builder
-    public static Builder builder() {
+    static Builder builder() {
         return new Builder();
     }
 
@@ -40,43 +38,34 @@ public final class Button {
         private String name;
         private List<String> intents;
         private List<Operation> operations;
-        private Session context;
-
         private Builder() {
             intents = new ArrayList<>();
             operations = new ArrayList<>();
         }
 
-        public Builder setName(String name) {
+        Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder addIntent(String intent) {
+        Builder addIntent(String intent) {
             intents.add(intent);
             return this;
         }
 
-        public Builder addOperation(Operation operation) {
+        Builder addOperation(Operation operation) {
             operations.add(operation);
             return this;
         }
 
-        public Builder setSession(Session context) {
-            this.context = context;
-            return this;
-        }
-
-        public Button build() {
+        Button build() {
             if (name == null)
                 throw new IllegalStateException("text can't be null");
             if (intents.isEmpty())
                 throw new IllegalStateException("should have at least one intent");
             if (operations.isEmpty())
                 throw new IllegalStateException("should have at least one operation");
-            if (context == null)
-                throw new IllegalStateException("should specify activation context");
-            return new Button(name, intents, operations, context);
+            return new Button(name, intents, operations);
         }
     }
 }

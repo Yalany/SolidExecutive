@@ -2,7 +2,6 @@ package model;
 
 import model.session.*;
 import model.session.command.Repeat;
-import model.session.operation.ChangeResource;
 
 final class Repository {
 
@@ -10,45 +9,39 @@ final class Repository {
         return new User(id);
     }
 
-    static Session getSession(String id) {
+    static Session getSession(User forUser) {
         return Session.builder()
+                .setEventProvider(null) //
+                .setCommands(null)      //
+                .setEventDeck(null)     //
+                .setGameResources(null) //
                 .build();
     }
 
-    static EventProvider getEventProvider(String type) {
-        return (id, context) -> Event.builder()
-                .setText("Это тестовое событие. В нём всего два варианта ответа," +
-                        " первый портит вашу репутацию у властей на 10%, второй на столько же улучшает."
-                        + " type=" + type + ", gov=" + context.getGameResources().getAmount("gov")
-                        + ", nextEventId=" + context.getEventDeck().peek())
-                .addButton(Button.builder()
-                        .setName("Первый вариант")
-                        .addIntent("1")
-                        .addIntent("первый вариант")
-                        .addOperation(new ChangeResource("gov", -10))
-                        .setSession(context)
-                        .build())
-                .addButton(Button.builder()
-                        .setName("Второй вариант")
-                        .addIntent("2")
-                        .addIntent("второй вариант")
-                        .addOperation(new ChangeResource("gov", +10))
-                        .setSession(context)
-                        .build())
+    static Session newSession(User forUser) {
+        return Session.builder()
+                .setEventProvider(Repository.getEventProvider(forUser.isSubscribed() ? "gamePlus" : "game"))
+                .setCommands(Repository.getCommands("game"))
+                .setEventDeck(Repository.getEventDeck("standard"))
+                .setGameResources(Repository.getGameResources("standard"))
                 .build();
     }
 
-    static Commands getCommands(String type) {
+    private static EventProvider getEventProvider(String type) {
+        return new EventProvider();
+    }
+
+    private static Commands getCommands(String type) {
         return Commands.builder()
                 .addCommand(new Repeat())
                 .build();
     }
 
-    static EventDeck getEventDeck(String preset) {
+    private static EventDeck getEventDeck(String preset) {
         return new EventDeck(60, true);
     }
 
-    static GameResources getGameResources(String preset) {
+    private static GameResources getGameResources(String preset) {
         return GameResources.builder()
                 .addResource("gov", "одобрение администрацией", 75)
                 .addResource("civ", "лояльность населения", 50)

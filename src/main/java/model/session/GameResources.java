@@ -19,14 +19,6 @@ public final class GameResources {
         return resources.get(id).getValue();
     }
 
-    boolean haveAmount(String id, int amount) {
-        return resources.get(id).getValue() >= amount;
-    }
-
-    void setAmount(String id, int amount) {
-        resources.get(id).setValue(amount);
-    }
-
     void modifyAmount(String id, int modification) {
         resources.get(id).modifyValue(modification);
     }
@@ -36,7 +28,7 @@ public final class GameResources {
     }
 
 
-    private static class GameResource {
+    private static final class GameResource {
         private final String displayName;
         private int value;
 
@@ -51,10 +43,6 @@ public final class GameResources {
 
         int getValue() {
             return value;
-        }
-
-        void setValue(int value) {
-            this.value = value;
         }
 
         void modifyValue(int addition) {

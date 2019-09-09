@@ -1,56 +1,33 @@
 package model;
 
 import model.session.Session;
-import model.session.User;
 
 import java.util.Scanner;
 
 public class Main {
 
+    private static void startGameLoop(Session session, Scanner scanner) {
+        //noinspection InfiniteLoopStatement
+        while (true) {
+            System.out.print("input: ");
+            session.acceptUserIntent(scanner.nextLine());
+            printSessionToConsole(session);
+        }
+    }
+
+    private static void printSessionToConsole(Session session) {
+        System.out.print("output: ");
+        System.out.println(session.getEventText());
+
+        var buttons = new StringBuilder("Buttons:\n");
+        session.getButtonsText().forEach(buttonText -> buttons.append(buttonText).append(" | "));
+        System.out.println(buttons.toString());
+    }
+
     public static void main(String[] args) {
         var userId = "12349f91f91";
-
-        User user = Repository.getUser(userId);
-
-        Session session;
-
-        if (user.haveActiveGame())
-            session = Repository.getSession(userId);
-        else
-            session = Session.builder()
-                    .setEventProvider(
-                            user.isSubscribed() ? Repository.getEventProvider("gamePlus")
-                                    : Repository.getEventProvider("game"))
-                    .setCommands(Repository.getCommands("menu"))
-                    .setCommands(Repository.getCommands("game"))
-                    .setEventDeck(Repository.getEventDeck("tutorial"))
-                    .setEventDeck(Repository.getEventDeck("standard"))
-                    .setGameResources(Repository.getGameResources("tutorial"))
-                    .setGameResources(Repository.getGameResources("standard"))
-                    .build();
-
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            System.out.print("Enter intent: ");
-            var input = scanner.nextLine();
-
-            if (input.equals("q")) {
-                System.out.println("Exit!");
-                scanner.close();
-                return;
-            }
-
-            session.acceptUserIntent(input);
-
-            var eventText = session.getEventText();
-            var buttonsText = session.getButtonsText();
-
-            StringBuilder buttons = new StringBuilder("Buttons:\n");
-            buttonsText.forEach(b -> buttons.append(b).append(" | "));
-
-            System.out.println(eventText);
-            System.out.println(buttons.toString());
-        }
+        var forUser = Repository.getUser(userId);
+        var session = forUser.haveActiveGame() ? Repository.getSession(forUser) : Repository.newSession(forUser);
+        startGameLoop(session, new Scanner(System.in));
     }
 }

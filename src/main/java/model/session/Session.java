@@ -29,12 +29,7 @@ public final class Session {
         currentEvent = eventProvider.getEventById(eventDeck.pop(), this);
     }
 
-    public Session nextMonth() {
-        currentMonth++;
-        return this;
-    }
-
-    // Input
+    // input
     public void acceptUserIntent(String intent) {
         if (currentEvent.canAcceptIntent(intent)) {
             currentEvent.acceptIntent(intent);
@@ -48,7 +43,7 @@ public final class Session {
         // TODO: actions if intent is unacceptable
     }
 
-    // Output
+    // output
     public String getEventText() {
         return currentEvent.getText();
     }
@@ -57,12 +52,15 @@ public final class Session {
         return currentEvent.getButtonsText();
     }
 
-    // for commands
+
     public int getCurrentMonth() {
         return currentMonth;
     }
 
-    // for operator
+//    public void nextMonth() {
+//        currentMonth++;
+//    }
+
     SessionOperator getOperator() {
         return sessionOperator;
     }
@@ -75,6 +73,7 @@ public final class Session {
         return gameResources;
     }
 
+
     // builder
     public static Builder builder() {
         return new Builder();
@@ -84,7 +83,6 @@ public final class Session {
 
         private EventProvider eventProvider;
         private Commands commands;
-
         private EventDeck eventDeck;
         private GameResources gameResources;
 
