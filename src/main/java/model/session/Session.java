@@ -40,7 +40,7 @@ public final class Session {
             commands.acceptCommand(intent, this);
         }
 
-        // TODO: actions if intent is unacceptable
+        // TODO: actions if intent is unacceptable (Catch All)
     }
 
     // output
@@ -53,23 +53,23 @@ public final class Session {
     }
 
 
-    public int getCurrentMonth() {
-        return currentMonth;
-    }
-
 //    public void nextMonth() {
 //        currentMonth++;
 //    }
+
+    int getCurrentMonth() {
+        return currentMonth;
+    }
 
     SessionOperator getOperator() {
         return sessionOperator;
     }
 
-    public EventDeck getEventDeck() {
+    EventDeck getEventDeck() {
         return eventDeck;
     }
 
-    public GameResources getGameResources() {
+    GameResources getGameResources() {
         return gameResources;
     }
 
