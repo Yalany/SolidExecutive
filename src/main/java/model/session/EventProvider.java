@@ -5,8 +5,6 @@ import model.session.operation.InsertNextEvent;
 import model.session.operation.LoadGame;
 import model.session.operation.StartGame;
 
-љ
-
 public class EventProvider {
     Event getEventById(int id, Session context) {
         var event0 = Event.builder()
