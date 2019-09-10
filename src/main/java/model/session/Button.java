@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-final class Button {
+public final class Button {
 
     private final String name;
     private final List<String> intents;
@@ -24,12 +24,12 @@ final class Button {
         return intents.contains(intent);
     }
 
-    void activate(Session context) {
-        operations.forEach(o -> o.activate(context.getOperator()));
+    void activate(SessionOperator contextOperator) {
+        operations.forEach(o -> o.activate(contextOperator));
     }
 
     // builder
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -43,22 +43,22 @@ final class Button {
             operations = new ArrayList<>();
         }
 
-        Builder setName(String name) {
+        public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        Builder addIntent(String intent) {
+        public Builder addIntent(String intent) {
             intents.add(intent);
             return this;
         }
 
-        Builder addOperation(Operation operation) {
+        public Builder addOperation(Operation operation) {
             operations.add(operation);
             return this;
         }
 
-        Button build() {
+        public Button build() {
             if (name == null)
                 throw new IllegalStateException("text can't be null");
             if (intents.isEmpty())

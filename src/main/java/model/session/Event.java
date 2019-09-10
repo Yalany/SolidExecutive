@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-final class Event {
+public final class Event {
 
     private final String text;
     private final List<Button> buttons;
-    private final Session context;
 
-    private Event(final String text, final List<Button> buttons, final Session context) {
+    private Event(final String text, final List<Button> buttons) {
         this.text = text;
         this.buttons = buttons;
-        this.context = context;
     }
 
     String getText() {
@@ -31,14 +29,14 @@ final class Event {
                 .anyMatch(button -> button.containsIntent(intent));
     }
 
-    void acceptIntent(String intent) {
+    void acceptIntent(String intent, SessionOperator contextOperator) {
         buttons.stream()
                 .filter(button -> button.containsIntent(intent))
-                .forEach(button -> button.activate(context));
+                .forEach(button -> button.activate(contextOperator));
     }
 
     // builder
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -46,33 +44,27 @@ final class Event {
 
         private String text;
         private List<Button> buttons;
-        private Session context;
 
         private Builder() {
             buttons = new ArrayList<>();
         }
 
-        Builder setText(String text) {
+        public Builder setText(String text) {
             this.text = text;
             return this;
         }
 
-        Builder addButton(Button button) {
+        public Builder addButton(Button button) {
             buttons.add(button);
             return this;
         }
 
-        Builder setContext(Session context) {
-            this.context = context;
-            return this;
-        }
-
-        Event build() {
+        public Event build() {
             if (text == null)
                 throw new IllegalStateException("text can't be null");
             if (buttons.isEmpty())
                 throw new IllegalStateException("should have at least one button");
-            return new Event(text, buttons, context);
+            return new Event(text, buttons);
         }
     }
 }

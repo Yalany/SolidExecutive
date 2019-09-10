@@ -2,6 +2,7 @@ package model;
 
 import model.session.*;
 import model.session.command.Repeat;
+import model.session.eventprovider.TestEventProvider;
 
 final class Repository {
 
@@ -28,7 +29,7 @@ final class Repository {
     }
 
     private static EventProvider getEventProvider(String type) {
-        return new EventProvider();
+        return new TestEventProvider();
     }
 
     private static Commands getCommands(String type) {

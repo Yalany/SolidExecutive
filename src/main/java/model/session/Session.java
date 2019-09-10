@@ -26,18 +26,18 @@ public final class Session {
     }
 
     private void nextEvent() {
-        currentEvent = eventProvider.getEventById(eventDeck.pop(), this);
+        currentEvent = eventProvider.getEventById(eventDeck.pop());
     }
 
     // input
     public void acceptUserIntent(String intent) {
         if (currentEvent.canAcceptIntent(intent)) {
-            currentEvent.acceptIntent(intent);
+            currentEvent.acceptIntent(intent, sessionOperator);
             nextEvent();
             return;
         }
         if (commands.canAcceptCommand(intent)) {
-            commands.acceptCommand(intent, this);
+            commands.acceptCommand(intent, sessionOperator);
         }
 
         // TODO: actions if intent is unacceptable (Catch All)

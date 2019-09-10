@@ -1,4 +1,4 @@
-package model.session;
+package model;
 
 public final class User {
 
@@ -7,18 +7,18 @@ public final class User {
     private long subscriptionEndTime;
     private boolean haveActiveGame;
 
-    public User(String id) {
+    User(String id) {
         this.id = id;
 //        gamesFinished = 0;
         subscriptionEndTime = System.currentTimeMillis();
         haveActiveGame = false;
     }
 
-    public boolean isSubscribed() {
+    boolean isSubscribed() {
         return System.currentTimeMillis() < subscriptionEndTime;
     }
 
-    public boolean haveActiveGame() {
+    boolean haveActiveGame() {
         return haveActiveGame;
     }
 

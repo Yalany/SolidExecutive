@@ -5,13 +5,6 @@ import java.util.List;
 
 public final class Commands {
 
-//    public final static String INTENT_CATCH_ALL = "catch all";
-//    public final static String INTENT_REPEAT = "repeat";
-//    public final static String INTENT_MONTH = "month";
-//    public final static String INTENT_RESOURCES = "resources";
-//    public final static String INTENT_EXIT = "exit";
-//    public final static String INTENT_HELP = "help";
-
     private final List<Command> commands;
 
     private Commands(List<Command> commands) {
@@ -23,10 +16,10 @@ public final class Commands {
                 .anyMatch(command -> command.haveIntent(intent));
     }
 
-    void acceptCommand(String intent, Session context) {
+    void acceptCommand(String intent, SessionOperator contextOperator) {
         commands.stream()
                 .filter(command -> command.haveIntent(intent))
-                .forEach(command -> command.execute(context));
+                .forEach(command -> command.execute(contextOperator));
     }
 
     // builder
