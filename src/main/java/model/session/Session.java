@@ -22,10 +22,10 @@ public final class Session {
         this.eventDeck = eventDeck;
         this.gameResources = gameResources;
         this.currentMonth = 0;
-        nextEvent();
+        endTurn();
     }
 
-    private void nextEvent() {
+    private void endTurn() {
         currentEvent = eventProvider.getEventById(eventDeck.pop());
     }
 
@@ -33,7 +33,7 @@ public final class Session {
     public void acceptUserIntent(String intent) {
         if (currentEvent.canAcceptIntent(intent)) {
             currentEvent.acceptIntent(intent, sessionOperator);
-            nextEvent();
+            endTurn();
             return;
         }
         if (commands.canAcceptCommand(intent)) {
@@ -59,10 +59,6 @@ public final class Session {
 
     int getCurrentMonth() {
         return currentMonth;
-    }
-
-    SessionOperator getOperator() {
-        return sessionOperator;
     }
 
     EventDeck getEventDeck() {

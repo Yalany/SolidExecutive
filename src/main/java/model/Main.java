@@ -9,9 +9,9 @@ public class Main {
     private static void startGameLoop(Session session, Scanner scanner) {
         //noinspection InfiniteLoopStatement
         while (true) {
+            printSessionToConsole(session);
             System.out.print("> ~input: ");
             session.acceptUserIntent(scanner.nextLine());
-            printSessionToConsole(session);
         }
     }
 
@@ -29,7 +29,6 @@ public class Main {
 
         var forUser = Repository.getUser(userId);
         var session = forUser.haveActiveGame() ? Repository.getSession(forUser) : Repository.newSession(forUser);
-        printSessionToConsole(session);
         startGameLoop(session, new Scanner(System.in));
     }
 }
