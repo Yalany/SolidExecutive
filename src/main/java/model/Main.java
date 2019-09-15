@@ -27,8 +27,8 @@ public class Main {
     public static void main(String[] args) {
         var userId = "12349f91f91";
 
-        var forUser = Repository.getUser(userId);
-        var session = forUser.haveActiveGame() ? Repository.getSession(forUser) : Repository.newSession(forUser);
+        var user = Repository.getUser(userId);
+        var session = user.haveActiveGame() ? Repository.getSession(user) : Repository.newSession(user);
         startGameLoop(session, new Scanner(System.in));
     }
 }
