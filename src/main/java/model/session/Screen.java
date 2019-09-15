@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class Event {
+public final class Screen {
 
     private final String text;
     private final List<Button> buttons;
 
-    private Event(final String text, final List<Button> buttons) {
+    private Screen(final String text, final List<Button> buttons) {
         this.text = text;
         this.buttons = buttons;
     }
@@ -59,12 +59,12 @@ public final class Event {
             return this;
         }
 
-        public Event build() {
+        public Screen build() {
             if (text == null)
                 throw new IllegalStateException("text can't be null");
             if (buttons.isEmpty())
                 throw new IllegalStateException("should have at least one button");
-            return new Event(text, buttons);
+            return new Screen(text, buttons);
         }
     }
 }

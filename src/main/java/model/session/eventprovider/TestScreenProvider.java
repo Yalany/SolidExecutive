@@ -1,18 +1,18 @@
 package model.session.eventprovider;
 
 import model.session.Button;
-import model.session.Event;
-import model.session.EventProvider;
+import model.session.Screen;
+import model.session.ScreenProvider;
 import model.session.operation.EndSession;
 import model.session.operation.InsertNextEvent;
 import model.session.operation.LoadGame;
 import model.session.operation.StartGame;
 
-public class TestEventProvider implements EventProvider {
+public class TestScreenProvider implements ScreenProvider {
 
     @Override
-    public Event getEventById(int id) {
-        var event0 = Event.builder()
+    public Screen getEventById(int id) {
+        var event0 = Screen.builder()
                 .setText("Добро пожаловать в город N! Последний мэр города не оправдал возложенных на него надежд." +
                         " Оправдает ли их новый мэр в Вашем лице?")
                 .addButton(Button.builder()
@@ -36,7 +36,7 @@ public class TestEventProvider implements EventProvider {
                         .build())
                 .build();
 
-        var event1 = Event.builder()
+        var event1 = Screen.builder()
                 .setText("Если Вы не заканчивали ускоренный курс эффективного мэра, то можете сделать это прямо сейчас!" +
                         " Желаете пройти курс или Вы уже готовы вступить в должность мэра города N?")
                 .addButton(Button.builder()
@@ -57,7 +57,7 @@ public class TestEventProvider implements EventProvider {
                         .build())
                 .build();
 
-        var event2 = Event.builder()
+        var event2 = Screen.builder()
                 .setText("С возвращением, господин мэр! Мы всё ещё ждём Ваших решений по делам города." +
                         " Желаете вернуться к оставленным делам или воспользуетесь шансом начать всё заново?")
                 .addButton(Button.builder()

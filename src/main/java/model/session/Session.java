@@ -6,18 +6,18 @@ public final class Session {
 
     private final SessionOperator sessionOperator;
 
-    private final EventProvider eventProvider;
+    private final ScreenProvider screenProvider;
     private final Commands commands;
 
     private final EventDeck eventDeck;
     private final GameResources gameResources;
 
-    private Event currentEvent;
+    private Screen currentScreen;
     private int currentMonth;
 
-    private Session(EventProvider eventProvider, Commands commands, EventDeck eventDeck, GameResources gameResources) {
+    private Session(ScreenProvider screenProvider, Commands commands, EventDeck eventDeck, GameResources gameResources) {
         sessionOperator = new SessionOperator(this);
-        this.eventProvider = eventProvider;
+        this.screenProvider = screenProvider;
         this.commands = commands;
         this.eventDeck = eventDeck;
         this.gameResources = gameResources;
@@ -26,13 +26,13 @@ public final class Session {
     }
 
     private void endTurn() {
-        currentEvent = eventProvider.getEventById(eventDeck.pop());
+        currentScreen = screenProvider.getEventById(eventDeck.pop());
     }
 
     // input
     public void acceptUserIntent(String intent) {
-        if (currentEvent.canAcceptIntent(intent)) {
-            currentEvent.acceptIntent(intent, sessionOperator);
+        if (currentScreen.canAcceptIntent(intent)) {
+            currentScreen.acceptIntent(intent, sessionOperator);
             endTurn();
             return;
         }
@@ -45,11 +45,11 @@ public final class Session {
 
     // output
     public String getEventText() {
-        return currentEvent.getText();
+        return currentScreen.getText();
     }
 
     public List<String> getButtonsText() {
-        return currentEvent.getButtonsText();
+        return currentScreen.getButtonsText();
     }
 
 
@@ -77,7 +77,7 @@ public final class Session {
 
     public static final class Builder {
 
-        private EventProvider eventProvider;
+        private ScreenProvider screenProvider;
         private Commands commands;
         private EventDeck eventDeck;
         private GameResources gameResources;
@@ -85,8 +85,8 @@ public final class Session {
         private Builder() {
         }
 
-        public Builder setEventProvider(EventProvider eventProvider) {
-            this.eventProvider = eventProvider;
+        public Builder setScreenProvider(ScreenProvider screenProvider) {
+            this.screenProvider = screenProvider;
             return this;
         }
 
@@ -106,7 +106,7 @@ public final class Session {
         }
 
         public Session build() {
-            return new Session(eventProvider, commands, eventDeck, gameResources);
+            return new Session(screenProvider, commands, eventDeck, gameResources);
         }
     }
 }

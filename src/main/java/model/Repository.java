@@ -2,7 +2,7 @@ package model;
 
 import model.session.*;
 import model.session.command.Repeat;
-import model.session.eventprovider.TestEventProvider;
+import model.session.eventprovider.TestScreenProvider;
 
 final class Repository {
 
@@ -12,7 +12,7 @@ final class Repository {
 
     static Session getSession(User forUser) {
         return Session.builder()
-                .setEventProvider(null) //
+                .setScreenProvider(null) //
                 .setCommands(null)      //
                 .setEventDeck(null)     //
                 .setGameResources(null) //
@@ -21,15 +21,15 @@ final class Repository {
 
     static Session newSession(User forUser) {
         return Session.builder()
-                .setEventProvider(Repository.getEventProvider(forUser.isSubscribed() ? "gamePlus" : "game"))
+                .setScreenProvider(Repository.getEventProvider(forUser.isSubscribed() ? "gamePlus" : "game"))
                 .setCommands(Repository.getCommands("game"))
                 .setEventDeck(Repository.getEventDeck("standard"))
                 .setGameResources(Repository.getGameResources("standard"))
                 .build();
     }
 
-    private static EventProvider getEventProvider(String type) {
-        return new TestEventProvider();
+    private static ScreenProvider getEventProvider(String type) {
+        return new TestScreenProvider();
     }
 
     private static Commands getCommands(String type) {
