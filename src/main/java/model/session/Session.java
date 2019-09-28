@@ -53,9 +53,9 @@ public final class Session {
     }
 
 
-//    public void nextMonth() {
-//        currentMonth++;
-//    }
+    public void nextMonth() {
+        currentMonth++;
+    }
 
     int getCurrentMonth() {
         return currentMonth;
