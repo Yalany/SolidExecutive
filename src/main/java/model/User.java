@@ -3,13 +3,13 @@ package model;
 public final class User {
 
     private final String id;
-//    private int gamesFinished;
+    private int gamesFinished;
     private long subscriptionEndTime;
     private boolean haveActiveGame;
 
     User(String id) {
         this.id = id;
-//        gamesFinished = 0;
+        gamesFinished = 0;
         subscriptionEndTime = System.currentTimeMillis();
         haveActiveGame = false;
     }
@@ -26,19 +26,19 @@ public final class User {
         return id;
     }
 
-//    public int getGamesFinished() {
-//        return gamesFinished;
-//    }
-//
-//    public void incrementGamesFinished() {
-//        this.gamesFinished++;
-//    }
-//
-//    public void setSubscriptionEndTime(long subscriptionEndTime) {
-//        this.subscriptionEndTime = subscriptionEndTime;
-//    }
-//
-//    public void setHaveActiveGame(boolean haveActiveGame) {
-//        this.haveActiveGame = haveActiveGame;
-//    }
+    public int getGamesFinished() {
+        return gamesFinished;
+    }
+
+    public void incrementGamesFinished() {
+        this.gamesFinished++;
+    }
+
+    public void setSubscriptionEndTime(long subscriptionEndTime) {
+        this.subscriptionEndTime = subscriptionEndTime;
+    }
+
+    public void setHaveActiveGame(boolean haveActiveGame) {
+        this.haveActiveGame = haveActiveGame;
+    }
 }
