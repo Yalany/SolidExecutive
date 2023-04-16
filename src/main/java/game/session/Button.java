@@ -1,4 +1,4 @@
-package model.session;
+package game.session;
 
 import java.util.ArrayList;
 import java.util.List;

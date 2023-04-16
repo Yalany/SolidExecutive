@@ -1,4 +1,4 @@
-package model.session;
+package game.session;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ public final class GameResources {
         this.resources = resources;
     }
 
-    String getDisplayName(String id) {
+    String getName(String id) {
         return resources.get(id).getDisplayName();
     }
 

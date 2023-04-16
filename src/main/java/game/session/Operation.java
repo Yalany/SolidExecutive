@@ -1,4 +1,4 @@
-package model.session;
+package game.session;
 
 public interface Operation {
 

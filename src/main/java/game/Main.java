@@ -1,6 +1,6 @@
-package model;
+package game;
 
-import model.session.Session;
+import game.session.Session;
 
 import java.util.Scanner;
 

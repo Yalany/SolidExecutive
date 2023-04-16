@@ -1,7 +1,7 @@
-package model.session.command;
+package game.session.command;
 
-import model.session.Command;
-import model.session.SessionOperator;
+import game.session.Command;
+import game.session.SessionOperator;
 
 public class Month implements Command {
     @Override

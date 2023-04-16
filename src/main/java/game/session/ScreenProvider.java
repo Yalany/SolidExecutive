@@ -1,4 +1,4 @@
-package model.session;
+package game.session;
 
 // TODO всегда лепить кнопки "какой месяц" и "сколько ресурсов"
 public interface ScreenProvider {

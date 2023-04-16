@@ -1,8 +1,8 @@
-package model;
+package game;
 
-import model.session.*;
-import model.session.command.Repeat;
-import model.session.eventprovider.TestScreenProvider;
+import game.session.*;
+import game.session.command.Repeat;
+import game.session.eventprovider.TestScreenProvider;
 
 final class Repository {
 
@@ -47,7 +47,7 @@ final class Repository {
                 .addResource("gov", "одобрение администрацией", 75)
                 .addResource("civ", "лояльность населения", 50)
                 .addResource("money", "бюджет", 15000)
-                .addResource("infrastructure", "состояние инфраструктуры", 200000)
+                .addResource("infrastructure", "состояние города", 200000)
                 .build();
     }
 }

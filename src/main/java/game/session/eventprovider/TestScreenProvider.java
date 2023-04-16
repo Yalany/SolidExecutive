@@ -1,12 +1,12 @@
-package model.session.eventprovider;
+package game.session.eventprovider;
 
-import model.session.Button;
-import model.session.Screen;
-import model.session.ScreenProvider;
-import model.session.operation.EndSession;
-import model.session.operation.InsertNextEvent;
-import model.session.operation.LoadGame;
-import model.session.operation.StartGame;
+import game.session.Button;
+import game.session.Screen;
+import game.session.ScreenProvider;
+import game.session.operation.EndSession;
+import game.session.operation.InsertNextEvent;
+import game.session.operation.LoadGame;
+import game.session.operation.StartGame;
 
 public class TestScreenProvider implements ScreenProvider {
 

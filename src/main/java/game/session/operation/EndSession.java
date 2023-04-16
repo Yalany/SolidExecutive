@@ -1,7 +1,7 @@
-package model.session.operation;
+package game.session.operation;
 
-import model.session.Operation;
-import model.session.SessionOperator;
+import game.session.Operation;
+import game.session.SessionOperator;
 
 public class EndSession implements Operation {
 
