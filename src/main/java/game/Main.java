@@ -21,7 +21,7 @@ public class Main {
 
         var buttons = new StringBuilder("Buttons:\n");
         session.getButtonsText().forEach(buttonText -> buttons.append(buttonText).append(" | "));
-        System.out.println(buttons.toString());
+        System.out.println(buttons);
     }
 
     public static void main(String[] args) {
